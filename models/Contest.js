@@ -1,0 +1,52 @@
+const mongoose=require('mongoose')
+const contestSchema=new mongoose.Schema({
+name:{
+    type:String,
+    required:true
+},
+starttime:{
+    type:String,
+    required:true
+},
+endtime:{
+    type:String,
+    required:true
+},
+startdate:{
+    type:String,
+    required:true
+},
+enddate:{
+    type:String,
+    required:true
+},
+prize:{
+    type:String,
+    required:true
+},
+registereduser:{
+    type:String,
+    required:true
+},
+contestdetail:{
+    type:String,
+    required:true
+},
+rules:{
+    type:String,
+    required:true
+},
+upcoming:{
+type:Boolean,
+required:true
+},
+previous:{
+type:Boolean,
+required:true
+},
+ongoing:{
+type:Boolean,
+required:true
+}
+})
+module.exports=mongoose.model('Contest',contestSchema)

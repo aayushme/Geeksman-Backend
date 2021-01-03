@@ -2,6 +2,7 @@ const express = require("express");
 const bodyparser = require("body-parser");
 const mongoose = require("mongoose");
 const userrouter=require('./routers/user')
+const contestrouter=require('./routers/Contest')
 const app = express();
 app.use(bodyparser.urlencoded({ extended: false }));
 app.use(bodyparser.json());
@@ -18,6 +19,7 @@ app.use((req, res, next) => {
   });
 
 app.use('/geeksman',userrouter)
+app.use('/geeksman',contestrouter)
 app.use((req, res, next) => {
     throw new HttpError("Could not find this route", 404);
   });
