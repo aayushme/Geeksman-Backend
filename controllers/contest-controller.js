@@ -1,6 +1,5 @@
 const Contest = require('../models/Contest')
 const HttpError=require('../models/Http-error')
-const Contest=require('../models/Contest')
 
 const createcontest=async (req,res,next)=>{
 const {name,starttime,endtime,startdate,enddate,prize,registeredusers,contestdetail,rules,upcoming,previous,ongoing}=req.body
@@ -27,7 +26,7 @@ return next(error)
 res.status(200).json({contest:contest.toObject({getters:true})})
 }
 
-
+// code is missing here about the update thing......
 const updatecontest=async (req,res,next)=>{
 const contestid=req.params.cid
 let contest
