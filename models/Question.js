@@ -1,6 +1,10 @@
 const mongoose=require('mongoose')
 const QuestionSchema=new mongoose.Schema({
     description:String,
+    image:{
+        type:String,
+        required:false
+    },
     option:[
         {
         text:{

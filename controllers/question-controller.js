@@ -26,11 +26,13 @@ const getquestionbyid=async (req,res,next)=>{
 const createquestion=async (req,res,next)=>{
     try {
         const { description } = req.body
+        const { image } = req.body
         const { option } = req.body
         const {score}=req.body
 
         const question = await Question.create({
             description,
+            image,
             option,
             score
         })
@@ -43,19 +45,21 @@ const createquestion=async (req,res,next)=>{
 const updatequestion=async (req,res,next)=>{
     try {
         const _id = req.params.id 
-        const { description, option,score } = req.body
+        const { description, image ,option,score } = req.body
 
         let question = await Question.findOne({_id})
 
         if(!question){
             question = await Question.create({
                 description,
+                image,
                 option,
                 score
             })    
             return res.status(201).json(question)
         }else{
             question.description = description
+            question.image=image
             question.option = option
             question.score= score
             await question.save()
