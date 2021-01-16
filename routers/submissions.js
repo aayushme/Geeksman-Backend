@@ -1,4 +1,5 @@
 const express=require('express')
 const router=express.Router()
-router.post('/submit',)
+const submissioncontroller=require('../controllers/submission-controller')
+router.post('/submit',submissioncontroller.submissionhandler)
 module.exports=router

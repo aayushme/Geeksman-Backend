@@ -12,9 +12,9 @@ router.post(
   usercontroller.signuphandler
 );
 router.post("/login", usercontroller.loginhandler);
-router.get("/:uid", usercontroller.getuserbyid);
+router.get("/users/:uid", usercontroller.getuserbyid);
 router.get("/users",usercontroller.getallusers)
-router.delete("/:uid", usercontroller.deleteuser);
-router.patch("/:uid", usercontroller.updateuser);
+router.delete("/users/:uid", usercontroller.deleteuser);
+router.patch("/users/:uid", usercontroller.updateuser);
 
 module.exports=router

@@ -31,4 +31,4 @@ const submissionhandler=async (req,res,next)=>{
    return res.status(400).json({"error":error});
  } 
 }
-module.exports=submissionhandler
+module.exports={submissionhandler}
