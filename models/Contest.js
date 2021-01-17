@@ -24,7 +24,7 @@ prize:{
     type:String,
     required:true
 },
-registereduser:{
+registeredusers:{
     type:String,
     required:true
 },

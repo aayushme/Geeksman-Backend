@@ -1,5 +1,5 @@
 const {validationResult}=require('express-validator')
-const User=require('../models/User')
+const User=require('../models/User.js')
 const HttpError=require('../models/Http-error')
 const bcrypt=require('bcryptjs')
 const jwt=require('jsonwebtoken')
@@ -52,8 +52,10 @@ try{
 }catch(err){
     const error=new HttpError( "Signing up failed,please try again later",
     500)
-    return next(error)
+    return next(err)
 }
+newuser.isLogin=true;
+await newUser.save();
 }
 const loginhandler=async (req,res,next)=>{
 
@@ -61,6 +63,9 @@ const loginhandler=async (req,res,next)=>{
     let existingUser;
     try {
       existingUser = await User.findOne({ email });
+      existingUser.isLogin=true;
+      await existingUser.save();
+      return res.status(200).json(existingUser);
     } catch (err) {
       const error = new HttpError("Logging in failed,please try later", 500);
       return next(error);
@@ -103,6 +108,8 @@ const loginhandler=async (req,res,next)=>{
       );
       return next(error);
     }
+    existingUser.isLogin=true;
+    await existingUser.save();
     res
       .status(201)
       .json({

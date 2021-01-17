@@ -6,7 +6,7 @@ const contestrouter=require('./routers/Contest')
 const questionrouter=require('./routers/question')
 const submissionrouter=require('./routers/submissions')
 const adminrouter=require('./routers/admin')
-
+const registeredusersrouter=require('./routers/registerforcontest')
 const app = express();
 
 
@@ -21,14 +21,17 @@ app.use((req, res, next) => {
     next();
   });
 
-
+//admin router
 app.use('/admin',adminrouter)
+//body-parser
 app.use(bodyparser.urlencoded({ extended: false }));
 app.use(bodyparser.json());
+//rest-routers
 app.use(userrouter)
 app.use(contestrouter)
 app.use(questionrouter)
 app.use(submissionrouter)
+app.use(registeredusersrouter)
 app.use((req, res, next) => {
     throw new HttpError("Could not find this route", 404);
   });

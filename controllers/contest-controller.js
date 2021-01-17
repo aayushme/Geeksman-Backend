@@ -19,7 +19,8 @@ let contest=new Contest({
 })
 try{
 await contest.save()
-}catch{
+}catch(err){
+  console.log(err);
 const error=new HttpError('Could not create a contest please try again later',500)
 return next(error)
 }

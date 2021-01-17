@@ -29,6 +29,10 @@ const userSchema = new mongoose.Schema({
   image: {
     type: String,
   },
+  isLogin:{
+      type:Boolean,
+      default:false
+  }
 });
 userSchema.plugin(mongoosevalidator);
 module.exports = mongoose.model("User", userSchema);

@@ -1,0 +1,38 @@
+const mongoose=require('mongoose')
+const registerSchema=new mongoose.Schema({
+            Name:{
+                type:String,
+                required:true
+            },
+            email:{
+                type:String,
+                required:true
+            },
+            PhoneNo:{
+                type:Number,
+                required:true
+            },
+            branch:{
+                type:String
+            },
+            College:{
+                type:String
+            },
+            year:{
+                type:Number
+            },
+            slot:{
+                type:Number
+            },
+            ContestId:{
+                type:String,
+                required:true
+            },
+            validFrom:{
+                type:Number
+            },
+            validTo:{
+                  type:Number
+            }
+})
+module.exports=mongoose.model('registeredUsers',registerSchema);
