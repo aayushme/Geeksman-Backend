@@ -10,23 +10,23 @@ const userSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
-  phoneno: {
+  phoneno:{
     type: Number,
   },
-  college: {
+  college:{
     type: String,
   },
-  year: {
+  year:{
     type: String,
   },
-  Branch: {
+  Branch:{
     type: String,
   },
-  password: {
+  password:{
     type: String,
     required: true,
   },
-  image: {
+  image:{
     type: String,
   },
   isLogin:{

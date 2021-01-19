@@ -31,6 +31,7 @@ const newuser = new User({
     name,
     email,
     password: hashedpassword,
+    isLogin:true
   });
 try{
     await newuser.save();
@@ -47,26 +48,45 @@ try{
     token = jwt.sign(
         { userdId: newuser.id, email: newuser.email },
         process.env.JWT_KEY,
-        { expiresIn: "7h" }
+        { expiresIn: "22h" }
       );
 }catch(err){
     const error=new HttpError( "Signing up failed,please try again later",
     500)
     return next(err)
 }
-newuser.isLogin=true;
-await newUser.save();
+var api_key = process.env.EMAIL_KEY;
+var domain = 'sandbox97d7b61cf14e4024b796a51df9d3c7ed.mailgun.org';
+var mailgun = require('mailgun-js')({apiKey: api_key, domain: domain});
+ 
+var data = {
+  from: '<shubh8221@gmail.com>',
+  to: newuser.email,
+  subject: 'Thanks for Registering',
+  text: 'Hi  '+newuser.name+'Thanks for getting started with GeeksCode by Geeksman-The Coding Society!We need a little more information to complete your registration, including a confirmation of your email address. Click below to confirm your email address:[link].If you have problems, please paste the above URL into your web browser.'
+};
+ 
+mailgun.messages().send(data, function (error, body) {
+  if(error)
+  {
+    console.log(error);
+  }
+  console.log(body);
+});
 }
 const loginhandler=async (req,res,next)=>{
 
     const { email, password } = req.body;
     let existingUser;
-    try {
+    try 
+    {
       existingUser = await User.findOne({ email });
       existingUser.isLogin=true;
       await existingUser.save();
       return res.status(200).json(existingUser);
-    } catch (err) {
+    } 
+    catch (err) 
+    {
       const error = new HttpError("Logging in failed,please try later", 500);
       return next(error);
     }
@@ -189,6 +209,61 @@ const getallusers=async (req,res,next)=>{
         return next(new HttpError('Could not find users,please try again later',404))
     }
     res.status(200).json({users:users.map(user=>user.toObject({getters:true}))})
+}
+const forgotpass=async (req,res,next)=>{
+  try{ 
+  const {email}=req.body
+   const thisuser=await User.findOne({email});
+   if(thisuser)
+   {
+    var api_key = process.env.EMAIL_KEY;
+    var domain = 'sandbox97d7b61cf14e4024b796a51df9d3c7ed.mailgun.org';
+    var mailgun = require('mailgun-js')({apiKey: api_key, domain: domain});
+     
+    var data = {
+      from: '<shubh8221@gmail.com>',
+      to: thisuser.email,
+      subject: 'Reset Password',
+      text: 'Hi' +thisuser.name +'We got a request for changing your password at GeeksCode by Geeksman-The Coding Society! Click below to change your password https://geeksmanjcbust.in/changepassword If you have problems, please paste the above URL into your web browser. DONT CLICK THE LINK IF YOU HAV E NOT PLACED THIS REQUEST'
+    };
+     
+    mailgun.messages().send(data, function (error, body) {
+      if(error)
+      {
+        console.log(error);
+      }
+      console.log(body);
+    });
+   }
+   else
+   {
+     return res.status(500).json({"error":"User Not found!"}) 
+   }
+  }
+  catch(error)
+  {
+    return res.status(404).json({"error":error})
+  }
+}
+const resetPassword=async (res,req,next)=>{
+  try{
+     const {email}=res.body
+     const {password}=res.body
+     const thisuser=await User.findOne({email});
+     if(thisuser)
+     {
+        thisuser.password=password
+        await thisuser.save();    
+     }
+     else
+     {
+      return res.status(500).json({"error":"User Not found!"}) 
+     }
+    }
+  catch(error)
+  {
+    return res.status(404).json({"error":error}) 
+  }
 }
 module.exports={
     signuphandler,

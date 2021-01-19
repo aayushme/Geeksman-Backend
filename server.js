@@ -7,9 +7,10 @@ const questionrouter=require('./routers/question')
 const submissionrouter=require('./routers/submissions')
 const adminrouter=require('./routers/admin')
 const registeredusersrouter=require('./routers/registerforcontest')
+require('dotenv').config()
 const app = express();
 
-
+const server = require("http").createServer(app);
 
 app.use((req, res, next) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
@@ -30,8 +31,8 @@ app.use(bodyparser.json());
 app.use(userrouter)
 app.use(contestrouter)
 app.use(questionrouter)
-app.use(submissionrouter)
 app.use(registeredusersrouter)
+app.use(submissionrouter)
 app.use((req, res, next) => {
     throw new HttpError("Could not find this route", 404);
   });
@@ -46,15 +47,17 @@ app.use((req, res, next) => {
 
  mongoose
   .connect(
-    `mongodb+srv://Geeksmanofficial:rckpXtOjrj2BEOhw@cluster0.pe0ga.mongodb.net/geeksmandb?retryWrites=true&w=majority`,
+    `${process.env.DATABASE_URL}`,
     {
       useUnifiedTopology: true,
       useNewUrlParser: true,
     }
   ).then(()=>{
-    app.listen(5000, () => {
+    server.listen(5000, () => {
       console.log("server is running on port", 5000);
     });
   
+  }).catch((err)=>{
+    console.log(err)
   })
   

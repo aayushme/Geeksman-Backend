@@ -6,7 +6,8 @@ const QuestionSchema=new mongoose.Schema({
         type:String,
         required:false
     },
-    options:[
+    options:
+    [
         {
         option:{
             type:String,
@@ -18,7 +19,6 @@ const QuestionSchema=new mongoose.Schema({
         }
     }
     ],
-    correctValue:String,
     score:Number,
     email:String
 })
