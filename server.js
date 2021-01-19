@@ -44,7 +44,7 @@ app.use((req, res, next) => {
       .status(error.code || 500)
       .json({ message: error.message || "An unknown error occured" });
   });
- const port=process.env.PORT
+ const port=process.env.PORT||5000
  mongoose
   .connect(
     `${process.env.DATABASE_URL}`,
@@ -53,7 +53,7 @@ app.use((req, res, next) => {
       useNewUrlParser: true,
     }
   ).then(()=>{
-    server.listen(port||5000, () => {
+    server.listen(port, () => {
       console.log("server is running on port",port);
     });
   
