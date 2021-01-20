@@ -16,5 +16,7 @@ router.get("/users/:uid", usercontroller.getuserbyid);
 router.get("/users",usercontroller.getallusers)
 router.delete("/users/:uid", usercontroller.deleteuser);
 router.patch("/users/:uid", usercontroller.updateuser);
-
+router.post("/users/forgotpassword", usercontroller.forgotpass);
+router.post("/users/resetpassword", usercontroller.resetPassword);
+router.post("/users/getusercontest", usercontroller.getUserContest);
 module.exports=router

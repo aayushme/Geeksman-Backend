@@ -265,11 +265,32 @@ const resetPassword=async (res,req,next)=>{
     return res.status(404).json({"error":error}) 
   }
 }
+const getUserContest=async (req,res,next)=>{
+  try{
+    const{email}=req.body;
+     const contest=await Contest.find({email});
+     if(contest)
+     {
+        return res.status(200).json(contest);
+     }
+     else
+     {
+       return res.status(404).json({"error":"couldn't fetch contest"});
+     }
+  }
+  catch(error)
+  {
+    return res.status(404).json(contest);
+  }
+}
 module.exports={
     signuphandler,
     loginhandler,
     updateuser,
     getuserbyid,
     getallusers,
-    deleteuser
+    deleteuser,
+    forgotpass,
+    resetPassword,
+    getUserContest
 }
