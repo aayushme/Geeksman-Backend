@@ -48,7 +48,7 @@ var data = {
   html:  `<h2>Hi  ${newpendinguser.name}</h2>
     <p>Thanks for getting started with GeeksCode by Geeksman-The Coding Society!We need a little more information 
     to complete your registration, including a confirmation of your email address. Click below to confirm your email address:
-    <a href="https://geekscode-official-contest.herokuapp.com/activate/user/${hash}">link</a> If you have problems, please paste the above URL into your web browser.</p>`
+    <a href="${process.env.BACKEND_URL}/activate/user/${hash}">link</a> If you have problems, please paste the above URL into your web browser.</p>`
 };
  
 mailgun.messages().send(data, function (error, body) {
