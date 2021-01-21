@@ -241,6 +241,7 @@ const forgotpass=async (req,res,next)=>{
   }
 }
 const resetPassword=async (req,res,next)=>{
+  
   try{
      const {password,id}=req.body
      const thisuser=await User.findById(id);
