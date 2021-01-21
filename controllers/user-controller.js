@@ -3,21 +3,22 @@ const User=require('../models/User.js')
 const HttpError=require('../models/Http-error')
 const bcrypt=require('bcryptjs')
 const jwt=require('jsonwebtoken')
+const PendingUser=require('../models/PendingUser')
 const signuphandler=async (req,res,next)=>{
 const errors=validationResult(req)
 if(!errors.isEmpty()){
     return next(new HttpError("Invalid inputs passed,please check your data",422))
 }
 const {name,email,password}=req.body
-let existinguser;
 try{
 existinguser=await User.findOne({email})
+pendinguser=await PendingUser.findOne({email})
 }catch(err){
 const error=new HttpError('Signup failed,please try again later',500)
 return next(error)
 }
-if(existinguser){
-    const error=new HttpError('User already exists,Please login instead',422)
+if(existinguser||pendinguser){
+    const error=new HttpError('User is already registered,Please login instead',422)
     return next(error)
 }
 let hashedpassword;
@@ -27,43 +28,27 @@ hashedpassword=await bcrypt.hash(password,8)
     const error = new HttpError("Could not create user,try again later", 500);
     return next(error);
 }
-const newuser = new User({
+const newpendinguser = new PendingUser({
     name,
     email,
     password: hashedpassword,
-    isLogin:true
+    isLogin:false
   });
 try{
-    await newuser.save();
-}catch(err){
-    const error = new HttpError(
-        "Signing up failed,please try again later",
-        500
-      );
-      return next(error);
-}
-
-let token;
-try{
-    token = jwt.sign(
-        { userdId: newuser.id, email: newuser.email },
-        process.env.JWT_KEY,
-        { expiresIn: "22h" }
-      );
-}catch(err){
-    const error=new HttpError( "Signing up failed,please try again later",
-    500)
-    return next(err)
-}
+await newpendinguser.save();
 var api_key = process.env.EMAIL_KEY;
-var domain = 'sandbox97d7b61cf14e4024b796a51df9d3c7ed.mailgun.org';
+var domain = 'geeksmanjcbust.in';
 var mailgun = require('mailgun-js')({apiKey: api_key, domain: domain});
- 
+let hash=newpendinguser._id 
+console.log(hash)
 var data = {
-  from: '<shubh8221@gmail.com>',
-  to: newuser.email,
+  from: '<cedept@geeksmanjcbust.in>',
+  to: newpendinguser.email,
   subject: 'Thanks for Registering',
-  text: 'Hi  '+newuser.name+'Thanks for getting started with GeeksCode by Geeksman-The Coding Society!We need a little more information to complete your registration, including a confirmation of your email address. Click below to confirm your email address:[link].If you have problems, please paste the above URL into your web browser.'
+  html:  `<h2>Hi  ${newpendinguser.name}</h2>
+    <p>Thanks for getting started with GeeksCode by Geeksman-The Coding Society!We need a little more information 
+    to complete your registration, including a confirmation of your email address. Click below to confirm your email address:
+    <a href="https://geekscode-official-contest.herokuapp.com/activate/user/${hash}">link</a> If you have problems, please paste the above URL into your web browser.</p>`
 };
  
 mailgun.messages().send(data, function (error, body) {
@@ -73,9 +58,16 @@ mailgun.messages().send(data, function (error, body) {
   }
   console.log(body);
 });
+    res.json({message:'You have been registered,check your email address'})
+}catch(err){
+    const error = new HttpError(
+        "Signing up failed,please try again later",
+        500
+      );
+      return next(error);
+}
 }
 const loginhandler=async (req,res,next)=>{
-
     const { email, password } = req.body;
     let existingUser;
     try 
@@ -119,7 +111,7 @@ const loginhandler=async (req,res,next)=>{
       token = jwt.sign(
         { userdId: existingUser.id, email: existingUser.email },
         process.env.JWT_KEY,
-        { expiresIn: "7h" }
+        { expiresIn: "22h" }
       );
     } catch (err) {
       const error = new HttpError(
@@ -217,16 +209,18 @@ const forgotpass=async (req,res,next)=>{
    if(thisuser)
    {
     var api_key = process.env.EMAIL_KEY;
-    var domain = 'sandbox97d7b61cf14e4024b796a51df9d3c7ed.mailgun.org';
+    var domain = 'geeksmanjcbust.in';
     var mailgun = require('mailgun-js')({apiKey: api_key, domain: domain});
-     
+     let hash=thisuser._id
     var data = {
-      from: '<shubh8221@gmail.com>',
+      from: '<cedept@geeksmanjcbust.in>',
       to: thisuser.email,
       subject: 'Reset Password',
-      text: 'Hi' +thisuser.name +'We got a request for changing your password at GeeksCode by Geeksman-The Coding Society! Click below to change your password https://geeksmanjcbust.in/changepassword If you have problems, please paste the above URL into your web browser. DONT CLICK THE LINK IF YOU HAV E NOT PLACED THIS REQUEST'
-    };
-     
+      html: `<h2>Hi ${thisuser.name}</h2>
+       <p>We got a request for changing your password at GeeksCode by Geeksman-The Coding Society!</p>
+        <p>Click below to change your password <a href="${process.env.BACKEND_URL}changepassword/${hash}">Link</a></p> 
+        <p>If you have problems, please paste the above URL into your web browser. DONT CLICK THE LINK IF YOU HAVE NOT PLACED THIS REQUEST!!</p>`
+    };    
     mailgun.messages().send(data, function (error, body) {
       if(error)
       {
@@ -234,6 +228,7 @@ const forgotpass=async (req,res,next)=>{
       }
       console.log(body);
     });
+    res.json({message:'Your request for password change has been initiated,please check your email'})
    }
    else
    {
@@ -245,24 +240,28 @@ const forgotpass=async (req,res,next)=>{
     return res.status(404).json({"error":error})
   }
 }
-const resetPassword=async (res,req,next)=>{
+const resetPassword=async (req,res,next)=>{
   try{
-     const {email}=res.body
-     const {password}=res.body
-     const thisuser=await User.findOne({email});
+     const {password,id}=req.body
+     const thisuser=await User.findById(id);
+     if(!thisuser){
+       return res.status(200).json({message:'User does not exists'})
+     }
+     let hashedpassword;
      if(thisuser)
-     {
-        thisuser.password=password
-        await thisuser.save();    
+     {  hashedpassword=await bcrypt.hash(password,8)
+        thisuser.password=hashedpassword
+        await thisuser.save(); 
+        res.status(200).json({message:"password reset successfully"})  
      }
      else
      {
-      return res.status(500).json({"error":"User Not found!"}) 
+     return res.status(500).json({"error":"User Not found!"}) 
      }
     }
   catch(error)
   {
-    return res.status(404).json({"error":error}) 
+   return  res.status(404).json({"error":error}) 
   }
 }
 const getUserContest=async (req,res,next)=>{

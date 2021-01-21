@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const mongoosevalidator = require("mongoose-unique-validator");
-const userSchema = new mongoose.Schema({
+const PendinguserSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -8,7 +8,7 @@ const userSchema = new mongoose.Schema({
   email: {
     type: String,
     required: true,
-  unique: true,
+    unique: true,
   },
   phoneno:{
     type: Number,
@@ -34,5 +34,5 @@ const userSchema = new mongoose.Schema({
       default:false
   }
 });
-userSchema.plugin(mongoosevalidator);
-module.exports = mongoose.model("User", userSchema);
+PendinguserSchema.plugin(mongoosevalidator);
+module.exports = mongoose.model("PendingUser", PendinguserSchema);

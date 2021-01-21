@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    body{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+    button{
+        padding: 1rem 2rem;
+        border-radius: 100px;
+        border:2px solid black;
+        color: blue;
+    }
+    span{
+        color: green;
+    }
+</style>
+<body>
+    <h2><=%name%>,your registration has been <span>verified</span>,You can login now.</h2>
+    <button>Login</button>
+</body>
+<script>
+    document.querySelector('button').addEventListener('click',()=>{
+        window.location.replace("https://geeksmanjcbust.in")
+    })
+    </script>
+</html>

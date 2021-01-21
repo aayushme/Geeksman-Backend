@@ -1,26 +1,26 @@
 const express = require("express");
 const bodyparser = require("body-parser");
 const mongoose = require("mongoose");
+const HttpError=require('./models/Http-error')
 const userrouter=require('./routers/user')
 const contestrouter=require('./routers/Contest')
 const questionrouter=require('./routers/question')
 const submissionrouter=require('./routers/submissions')
 const adminrouter=require('./routers/admin')
+const verificationroute=require('./routers/verification')
 const registeredusersrouter=require('./routers/registerforcontest')
+const cors=require('cors')
 require('dotenv').config()
 const app = express();
-
+app.use(cors())
 const server = require("http").createServer(app);
+app.set('view engine', 'ejs');
+app.use(function (request, response, next) {
+  response.header("Access-Control-Allow-Origin", "*");
+  response.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 
-app.use((req, res, next) => {
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader(
-      "Access-Control-Allow-Headers",
-      "Origin,X-Requested-With,Content-Type,Accept,Authorization"
-    );
-    res.setHeader("Access-Control-Allow-Methods", "GET,POST,PATCH,DELETE");
-    next();
-  });
 
 //admin router
 app.use('/admin',adminrouter)
@@ -28,9 +28,11 @@ app.use('/admin',adminrouter)
 app.use(bodyparser.urlencoded({ extended: false }));
 app.use(bodyparser.json());
 //rest-routers
+
 app.use(userrouter)
 app.use(contestrouter)
 app.use(questionrouter)
+app.use(verificationroute)
 app.use(registeredusersrouter)
 app.use(submissionrouter)
 app.use((req, res, next) => {
@@ -44,6 +46,7 @@ app.use((req, res, next) => {
       .status(error.code || 500)
       .json({ message: error.message || "An unknown error occured" });
   });
+
  const port=process.env.PORT||5000
  mongoose
   .connect(

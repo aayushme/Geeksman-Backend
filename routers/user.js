@@ -12,11 +12,11 @@ router.post(
   usercontroller.signuphandler
 );
 router.post("/login", usercontroller.loginhandler);
-router.get("/users/:uid", usercontroller.getuserbyid);
+router.post("/resetpassword", usercontroller.resetPassword);
+router.get("/users/getuser/:uid", usercontroller.getuserbyid);
 router.get("/users",usercontroller.getallusers)
-router.delete("/users/:uid", usercontroller.deleteuser);
-router.patch("/users/:uid", usercontroller.updateuser);
-router.post("/users/forgotpassword", usercontroller.forgotpass);
-router.post("/users/resetpassword", usercontroller.resetPassword);
-router.post("/users/getusercontest", usercontroller.getUserContest);
+router.delete("/users/deleteuser/:uid", usercontroller.deleteuser);
+router.patch("/users/updateuser/:uid", usercontroller.updateuser);
+router.post("/forgotpassword", usercontroller.forgotpass);
+router.post("/getusercontest", usercontroller.getUserContest);
 module.exports=router
