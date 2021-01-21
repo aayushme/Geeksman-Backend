@@ -73,9 +73,6 @@ const loginhandler=async (req,res,next)=>{
     try 
     {
       existingUser = await User.findOne({ email });
-      existingUser.isLogin=true;
-      await existingUser.save();
-      return res.status(200).json(existingUser);
     } 
     catch (err) 
     {
