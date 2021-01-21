@@ -21,7 +21,7 @@ const verificationhandler=async (req,res,next)=>{
       }catch(e){
         res.json({error:e})
       }
-      res.render('/pages/verification',{name})
+      res.render('verification',{name})
     }catch(e){
       res.json({message:'Could not verify you please try again later'})
     }
