@@ -18,17 +18,8 @@
 
     <form id="prospects_form">
   <div class="form-group">
-    <label for="exampleInputEmail1">Email address</label>
-    <input type="email" class="form-control emailvalue" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
-    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-  </div>
-  <div class="form-group">
-    <label for="exampleInputPassword1">Password</label>
+    <label for="exampleInputPassword1">New Password</label>
     <input type="password" class="form-control passwordvalue" id="exampleInputPassword1" placeholder="Password">
-  </div>
-  <div class="form-group form-check">
-    <input type="checkbox" class="form-check-input" id="exampleCheck1">
-    <label class="form-check-label" for="exampleCheck1">Check me out</label>
   </div>
   <button type="submit" class="btn btn-primary">Submit</button>
 </form>
@@ -41,17 +32,13 @@
     let data={}
     var parsed_data=`<%- JSON.stringify(userid)%>`
     data.id=parsed_data;
-    let email,password
-    document.querySelector('.emailvalue').addEventListener('change',(e)=>{
-      email=e.target.value
-      data.email=email
-    })
+    let password
     document.querySelector('.passwordvalue').addEventListener('change',(e)=>{
       password=e.target.value
       data.password=password
     })
     document.querySelector('button').addEventListener('click',(e)=>{
-      
+      console.log(data)
       let url="https://geekscode-official-contest.herokuapp.com/resetpassword"
       $.ajax({
         type: "POST",

@@ -245,7 +245,7 @@ const resetPassword=async (req,res,next)=>{
      const {password,id}=req.body
      const thisuser=await User.findById(id);
      if(!thisuser){
-       return res.status(200).json({message:'User does not exists'})
+       return res.status(422).json({message:'User does not exists'})
      }
      let hashedpassword;
      if(thisuser)
@@ -261,7 +261,7 @@ const resetPassword=async (req,res,next)=>{
     }
   catch(error)
   {
-   return  res.status(404).json({"error":error}) 
+   return  res.status(402).json({"error":'this is one error'}) 
   }
 }
 const getUserContest=async (req,res,next)=>{
