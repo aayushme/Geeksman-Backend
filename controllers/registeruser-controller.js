@@ -17,7 +17,6 @@ const getUsers=async (req,res,next)=>{
           return res.status(404).json({message:'There are no registered users uptil now.'})
       }  
       return res.status(200).json({data:contestwithregisteredusers.registeredusers})
-    
 }
 const registerforcontest=async (req,res,next)=>{
       let {uid,cid}=req.body     
@@ -28,7 +27,7 @@ const registerforcontest=async (req,res,next)=>{
           if(user){
               let registereduser=await RegisteredUser.findOne({email:user.email})
               if(registereduser){
-                return  res.json({message:"you are already registered."})
+                return  res.json({message:"you are already registered.",registereduser})
               }
           }  
       }catch(e){
@@ -111,7 +110,6 @@ const registerforcontest=async (req,res,next)=>{
       }catch(e){
           res.status(500).json({"error":e})
       }
-       
 }
 const updatedetails=async (req,res,next)=>{
     try {

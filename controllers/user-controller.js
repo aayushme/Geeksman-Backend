@@ -161,7 +161,7 @@ const getuserbyid=async (req,res,next)=>{
    const userid=req.params.uid
    let user;
    try{
-     user=await User.findById({userid})
+     user=await User.findById(userid)
    }catch(err){
        const error=new HttpError('Something went wrong could not fetch user please try again later',500)
        return next(error)
@@ -194,7 +194,7 @@ res.status(200).json({message:'User deleted'})
 const getallusers=async (req,res,next)=>{
     let users;
     try{
-      users=await User.find({},'-password','-token')
+      users=await User.find({},['-password','-token','-usercontestdetail'])
     }catch(err){
         const error=new HttpError('could not fetch users,please try again later',500)
         return next(error)
@@ -268,7 +268,6 @@ const resetPassword=async (req,res,next)=>{
   }
 }
 const getUserContest=async (req,res,next)=>{
-
     const {uid}=req.body
     let userwithcontests;
     try{
@@ -280,7 +279,6 @@ const getUserContest=async (req,res,next)=>{
       return res.status(404).json({message:'There are no available previous contests done by you.'})
     }
     return res.status(200).json({data:userwithcontests.usercontestdetail})
-
 }
 module.exports={
     signuphandler,
