@@ -12,7 +12,6 @@ const registeredusersrouter=require('./routers/registerforcontest')
 const cors=require('cors')
 require('dotenv').config()
 const app = express();
-app.use(cors())
 const server = require("http").createServer(app);
 app.set('view engine', 'ejs');
 app.use(function (request, response, next) {

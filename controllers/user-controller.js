@@ -140,10 +140,15 @@ user=await User.findById(userid)
 if(!user){
     return next(new HttpError('Could not find a user with that id,please try again later',404))
 }
+if(name)
 user.name=name
+if(year)
 user.year=year
+if(phoneno)
 user.phoneno=phoneno
+if(college)
 user.college=college
+if(Branch)
 user.Branch=Branch
 try{
 await user.save()
@@ -189,7 +194,7 @@ res.status(200).json({message:'User deleted'})
 const getallusers=async (req,res,next)=>{
     let users;
     try{
-      users=await User.find({})
+      users=await User.find({},'-password','-token')
     }catch(err){
         const error=new HttpError('could not fetch users,please try again later',500)
         return next(error)
@@ -259,26 +264,23 @@ const resetPassword=async (req,res,next)=>{
     }
   catch(error)
   {
-   return  res.status(402).json({"error":'this is one error'}) 
+   return  res.status(404).json({"error":'this is one error'}) 
   }
 }
 const getUserContest=async (req,res,next)=>{
-  try{
-    const{email}=req.body;
-     const contest=await Contest.find({email});
-     if(contest)
-     {
-        return res.status(200).json(contest);
-     }
-     else
-     {
-       return res.status(404).json({"error":"couldn't fetch contest"});
-     }
-  }
-  catch(error)
-  {
-    return res.status(404).json(contest);
-  }
+
+    const {uid}=req.body
+    let userwithcontests;
+    try{
+      userwithcontests=await User.findById(uid).populate('usercontestdetail')
+    }catch(e){
+      return res.status(404).json({error:e})
+    }
+    if(!userwithcontests||userwithcontests.usercontestdetail.length===0){
+      return res.status(404).json({message:'There are no available previous contests done by you.'})
+    }
+    return res.status(200).json({data:userwithcontests.usercontestdetail})
+
 }
 module.exports={
     signuphandler,

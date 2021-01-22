@@ -2,20 +2,19 @@ const Contest = require('../models/Contest')
 const HttpError=require('../models/Http-error')
 
 const createcontest=async (req,res,next)=>{
-const {name,starttime,endtime,startdate,enddate,prize,registeredusers,contestdetail,rules,upcoming,previous,ongoing}=req.body
+const {name,starttime,endtime,Totalslots,prize,registeredusers,contestdetail,rules,contesttype}=req.body
+
+
 let contest=new Contest({
   name,
   starttime,
   endtime,
-  startdate,
-  enddate,
   prize,
   registeredusers,
   contestdetail,
   rules,
-  upcoming,
-  previous,
-  ongoing
+  contestType,
+  availableslot
 })
 try{
 await contest.save()
@@ -72,8 +71,8 @@ contests=await Contest.find({})
 }catch(err){
 return next(new HttpError("Could not fetch the contests,please try again later",500))
 }
-if(!contests){
-    return next(new HttpError("There are no contests currently available",422))
+if(contests.length===0){
+    return next(new HttpError("There are no contests currently available",404))
 }
 res.status(200).json({contests:contests.map(contest=>contest.toObject({getters:true}))})
 }
@@ -87,7 +86,7 @@ contest=await Contest.findById(contestid)
 return next(new HttpError('Could not delete the contest,please try again later',500))
 }
 if(!contest){
-    return next(new HttpError('Could not find a contest with that id',422))
+    return next(new HttpError('Could not find a contest with that id',404))
 }
 try{
 await contest.remove()

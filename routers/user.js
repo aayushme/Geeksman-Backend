@@ -12,11 +12,13 @@ router.post(
   usercontroller.signuphandler
 );
 router.post("/login", usercontroller.loginhandler);
+//not required by frontend
 router.post("/resetpassword", usercontroller.resetPassword);
 router.get("/users/getuser/:uid", usercontroller.getuserbyid);
 router.get("/users",usercontroller.getallusers)
 router.delete("/users/deleteuser/:uid", usercontroller.deleteuser);
 router.patch("/users/updateuser/:uid", usercontroller.updateuser);
+//required by frontend
 router.post("/forgotpassword", usercontroller.forgotpass);
-router.post("/getusercontest", usercontroller.getUserContest);
+router.post("/getusercontests", usercontroller.getUserContest);
 module.exports=router

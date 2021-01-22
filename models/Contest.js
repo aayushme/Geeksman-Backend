@@ -1,32 +1,43 @@
 const mongoose=require('mongoose')
 const contestSchema=new mongoose.Schema({
-name:{
+Contestname:{
     type:String,
     required:true
 },
 starttime:{
-    type:String,
+    type:Date,
     required:true
 },
 endtime:{
-    type:String,
-    required:true
-},
-startdate:{
-    type:String,
-    required:true
-},
-enddate:{
-    type:String,
+    type:Date,
     required:true
 },
 prize:{
     type:String,
     required:true
 },
-registeredusers:{
-    type:String,
-    required:true
+registeredusers:[
+    {
+        type:mongoose.Types.ObjectId,
+        ref:"RegisteredUser"
+    }
+],
+Totalslots:[{
+  slotno:{
+      type:String,
+      required:true
+  },
+  timeanddateofslot:{
+      type:Date,
+      required:true
+  }  
+}],
+slotstrength:{
+    type:Number,
+    required:true,
+},
+availableslot:{
+type:Array,
 },
 contestdetail:{
     type:String,
@@ -36,17 +47,10 @@ rules:{
     type:String,
     required:true
 },
-upcoming:{
-type:Boolean,
-required:true
-},
-previous:{
-type:Boolean,
-required:true
-},
-ongoing:{
-type:Boolean,
-required:true
+contestType:{
+    type:String,
+    enum:['ongoing','upcoming','previous'],
+    required:true
 }
 })
 module.exports=mongoose.model('Contest',contestSchema)

@@ -29,6 +29,12 @@ const userSchema = new mongoose.Schema({
   image:{
     type: String,
   },
+  usercontestdetail:[
+    {
+      type:mongoose.Types.ObjectId,
+      ref:'RegisteredUser'
+    }
+  ],
   isLogin:{
       type:Boolean,
       default:false

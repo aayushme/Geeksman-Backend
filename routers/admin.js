@@ -4,6 +4,7 @@ const express = require('express')
 const AdminBroMongoose = require('admin-bro-mongoose')
 const mongoose=require('mongoose')
 const bcrypt=require('bcryptjs')
+const RegisteredUser=require('../models/registeredUser')
 const AdminUser = require("../models/AdminUser");
 const session=require('express-session')
 const mongoStore=require('connect-mongo')(session)
@@ -20,8 +21,11 @@ const canEditmodels = ({ currentAdmin, record }) => {
     currentAdmin && currentAdmin.role === "admin";
   
 const adminBro = new AdminBro({
-  databases: [mongoose],
+  databases:[mongoose],
   resources:[
+    {
+      resource:RegisteredUser,
+    },
     {
         resource: AdminUser,
         options:{

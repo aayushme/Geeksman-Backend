@@ -1,117 +1,124 @@
-const registeredUsers=require('../models/registeredusers')
+const RegisteredUser=require('../models/registeredUser')
 const User=require('../models/User')
-const Contest=require('../models/Contest')
+const Contest=require('../models/Contest');
+const mongoose=require('mongoose')
+const mongooseUniqueValidator = require('mongoose-unique-validator');
 const getUsers=async (req,res,next)=>{
+    let contestid=req.params.cid
+    let contestwithregisteredusers
     try{
-        const allusers=await registeredUsers.find();
-        return res.status(200).json(allusers);
+        contestwithregisteredusers=await Contest.findById(contestid).populate('registeredusers')
         }
         catch(error)
         {
             return res.status(404).json(error);
         }
+      if(!contestwithregisteredusers||contestwithregisteredusers.registeredusers.length===0){
+          return res.status(404).json({message:'There are no registered users uptil now.'})
+      }  
+      return res.status(200).json({data:contestwithregisteredusers.registeredusers})
     
 }
 const registerforcontest=async (req,res,next)=>{
-    try
-    {
-        const { Name } = req.body
-        const { email } = req.body
-        const { PhoneNo } = req.body
-        const { branch }=req.body
-        const { College } = req.body
-        const { year }=req.body
-        const { ContestId }=req.body
-        const currentEntry=await User.findOne({email});
-        console.log(currentEntry);
-        if(!currentEntry)
-        {
-            return res.status(404).json({"error":"Please login or Sign up to continue"});
-        }
-        else if(currentEntry.isLogin===false)
-        {
-            return res.status(404).json({"error":"Please Login or Sign up to continue"});
-        }
-         else if(currentEntry.isLogin===true)
-         {   let validFrom
-              let validTo
-             const slot=Math.ceil(Math.random()*4);
-             const _id=ContestId
-             console.log(ContestId)
-             const targetContest=await Contest.findOne({ _id })
-             console.log(targetContest);
-             if(slot===1)
-             {
-             validFrom=Date.parse(targetContest.startdate);
-             validTo=validFrom+5400000;
-             }
-             else if(slot===2)
-             {
-                validFrom=Date.parse(targetContest.startdate)+5401000;
-                validTo=Date.parse(targetContest.startdate)+10800000;
-             }
-             else if(slot===3)
-             {
-                validFrom=Date.parse(targetContest.startdate)+10801000;
-                validTo=Date.parse(targetContest.startdate)+16200000;
-             }
-             else if(slot===4)
-             {
-                validFrom=Date.parse(targetContest.startdate)+16201000;
-                validTo=Date.parse(targetContest.startdate)+21600000;
-             }
-             console.log(slot)
-             console.log(validFrom)
-             console.log(validTo)
-             async function createUser()
-             {
-                const registereduser = await registeredUsers.create({
-                    Name,
-                    email,
-                    PhoneNo,
-                    branch,
-                    College,
-                    year,
-                    slot,
-                    ContestId,
-                    validFrom,
-                    validTo
-                })
-                
-                console.log(registereduser);
-                 return res.status(200).json(registereduser);
-                return res.status(201).json({"Success":"You have been successfully registered for the Upcoming Contest"});
-             }
-             createUser();
-            // const registereduser = await registeredUsers.create({
-            //     Name,
-            //     email,
-            //     PhoneNo,
-            //     branch,
-            //     College,
-            //     year,
-            //     slot,
-            //     ContestId,
-            //     validFrom,
-            //     validTo
-            // })
-            
-            // console.log(registereduser);
-            //  return res.status(200).json(registereduser);
-            // return res.status(201).json({"Success":"You have been successfully registered for the Upcoming Contest"});
+      let {uid,cid}=req.body     
+      let contest,user
+      try{
+          contest=await Contest.findById(cid)
+          user=await User.findById(uid)     
+          if(user){
+              let registereduser=await RegisteredUser.findOne({email:user.email})
+              if(registereduser){
+                return  res.json({message:"you are already registered."})
+              }
+          }  
+      }catch(e){
+        return res.status(404).json({"error":'Could not register right now,please try again later'})
+      }
+      if(!contest){
+          res.status(404).json({"error":'Could not find the contest that you are trying to register for,please try again later'})
+      }
+      if(!user){
+          res.status(404).json({"error":'Could not find the user,please try again later'})
+      }
+      let newuser=new RegisteredUser({
+          Name:user.name,
+          email:user.email,
+          PhoneNo:user.phoneno,
+          college:user.college,
+          year:user.year,
+          Branch:user.Branch,
+          ContestId:cid
+      }) 
+      await newuser.save();
+      let totalslots=contest.Totalslots.length
+      let givenslot
+      
+      if(contest.availableslot.length===0){
+        let slotarray=new Array(totalslots).fill(0)
+        contest.availableslot=slotarray
+      }
+      try{
+       for(let i=0;i<totalslots;++i){
+         if(contest.availableslot[i]<contest.slotstrength){
+              const sess=await mongoose.startSession()
+              sess.startTransaction()
+              givenslot=i+1
+              contest.availableslot[i]=(contest.availableslot[i]+1)
+              newuser.slot.slotno=givenslot
+              newuser.slot.slottime=contest.Totalslots[i].timeanddateofslot
+              newuser.contestname=contest.Contestname
+              await newuser.save({session:sess})
+              contest.registeredusers.push(newuser)
+              user.usercontestdetail.push(newuser)
+              await contest.save({session:sess})
+              await user.save({session:sess})
+              await sess.commitTransaction()
+              break;
          }
-    }
-    catch(error)
-    {  console.log(error)
-       return res.status(404).json({"error":"Something went wrong,please try again later"});
-    }
+       }
+       if(givenslot){
+        var api_key = process.env.EMAIL_KEY;
+        var domain = 'geeksmanjcbust.in';
+        var mailgun = require('mailgun-js')({apiKey: api_key, domain: domain});
+        var data = {
+          from: '<cedept@geeksmanjcbust.in>',
+          to:user.email,
+          subject: 'Thanks for Registering',
+          html:`
+          <h2>Dear ${user.name},<h2>
+          <p>Thank you for registering to ${contest.Contestname} on GeeksCode by Geeksman-The Coding Society of JC Bose UST. Your registration has been received</p>
+          <p>You registered with this email: ${user.email}.<p>
+          Your designated slot is ${givenslot}
+          Date and time of slot:-${contest.Totalslots[givenslot-1].timeanddateofslot}
+          <p>You can simply take the test by clicking at this link at you designated time slot.<a href="https://geeksmanjcbust.in/contests/${contest.Contestname}">Link</a>
+          If you forgot your password, simply hit "Forgot password" and you'll be prompted to reset it.</p>
+          If you have any questions leading up to the event, feel free to reply to cedept@geeksmanjcbust.in.<br>
+          We look forward to seeing you on EVENT DATE!<br>
+          Kind Regards,<br>
+          Geeksman Family
+          `
+        };
+         
+        mailgun.messages().send(data, function (error, body) {
+          if(error)
+          {
+            console.log(error);
+          }
+          console.log(body);
+        });
+       }
+       res.status(200).json({message:'You have been registered,please check your email'})
+      }catch(e){
+          res.status(500).json({"error":e})
+      }
+       
 }
 const updatedetails=async (req,res,next)=>{
     try {
         const _id = req.params.id 
         const { Name, email ,PhoneNo,branch,College,year } = req.body
 
-        let registereduser = await registeredUsers.findOne({_id})
+        let registereduser = await RegisteredUser.findOne({_id})
             if(registereduser)
             {
             registereduser.Name = Name
@@ -131,24 +138,9 @@ const updatedetails=async (req,res,next)=>{
         return res.status(500).json({"error":error})
     }
 }
-const deleteuser=async (req,res,next)=>{
-    try {
-        const _id = req.params.id 
 
-        const deleteduser = await registeredUsers.deleteOne({_id})
-
-        if(deleteduser.deletedCount === 0){
-            return res.status(404).json()
-        }else{
-            return res.status(204).json()
-        }
-    } catch (error) {
-        return res.status(500).json({"error":error})
-    }
-}
 module.exports={
     getUsers,
     registerforcontest,
-    updatedetails,
-    deleteuser
+    updatedetails
 }
