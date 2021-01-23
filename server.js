@@ -25,6 +25,8 @@ app.use(cors())
 
 //admin router
 app.use('/admin',adminrouter)
+//image location
+app.use('/uploads', express.static('uploads'));
 //body-parser
 app.use(bodyparser.urlencoded({ extended: false }));
 app.use(bodyparser.json());

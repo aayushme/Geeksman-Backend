@@ -23,12 +23,16 @@ const registerSchema=new mongoose.Schema({
             },
             Branch:{
                 type:String,
+                default:null
             },
             slot:{
                 slotno:{
                     type:Number
                 },
-                slottime:{
+                slotstarttime:{
+                    type:Date
+                },
+                slotendtime:{
                     type:Date
                 }
             },
@@ -38,10 +42,11 @@ const registerSchema=new mongoose.Schema({
             },
             contestname:{
                 type:String,
+                default:null
             },
             ContestId:{
                 type:String,
-                
+                default:null
             },
             
 })

@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const QuestionSchema = new mongoose.Schema({
   id: String,
   question: String,
-  image: {
+  profilePhotoLocation: {
     type: String,
     required: false,
   },

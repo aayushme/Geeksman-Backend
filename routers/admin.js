@@ -8,6 +8,12 @@ const RegisteredUser=require('../models/registeredUser')
 const AdminUser = require("../models/AdminUser");
 const session=require('express-session')
 const mongoStore=require('connect-mongo')(session)
+const User=require('../models/User')
+const Question=require('../models/Question')
+const {
+  after: uploadAfterHook,
+  before: uploadBeforeHook,
+} = require('../actions/upload-image.hook');
 AdminBro.registerAdapter(AdminBroMongoose)
 const canEditmodels = ({ currentAdmin, record }) => {
     return (
@@ -25,6 +31,90 @@ const adminBro = new AdminBro({
   resources:[
     {
       resource:RegisteredUser,
+    },
+    {
+      resource:User,
+      options: {
+        properties: {
+          profilePhotoLocation: {
+            isVisible: false,
+          },
+          uploadImage: {
+            components: {
+              edit: AdminBro.bundle('../components/upload-image.edit.tsx'),
+              list: AdminBro.bundle('../components/upload-image.list.tsx'),
+            },
+          },
+         
+        
+        },
+        actions: {
+          new: {
+            after: async (response, request, context) => {
+              return uploadAfterHook(response, request, context);
+            },
+            before: async (request, context) => {
+              return uploadBeforeHook(request, context);
+            },
+          },
+          edit: {
+            isAccessible:canEditmodels,
+            after: async (response, request, context) => {
+              return uploadAfterHook(response, request, context);
+            },
+            before: async (request, context) => {
+              return uploadBeforeHook(request, context);
+            },
+          },
+          delete: { isAccessible: canEditmodels },
+          show: {
+            isVisible: false,
+          },
+        },
+        
+      },
+    },
+    {
+      resource:Question,
+      options: {
+        properties: {
+          profilePhotoLocation: {
+            isVisible: false,
+          },
+          uploadImage: {
+            components: {
+              edit: AdminBro.bundle('../components/upload-image.edit.tsx'),
+              list: AdminBro.bundle('../components/upload-image.list.tsx'),
+            },
+          },
+         
+        
+        },
+        actions: {
+          new: {
+            after: async (response, request, context) => {
+              return uploadAfterHook(response, request, context);
+            },
+            before: async (request, context) => {
+              return uploadBeforeHook(request, context);
+            },
+          },
+          edit: {
+            isAccessible:canEditmodels,
+            after: async (response, request, context) => {
+              return uploadAfterHook(response, request, context);
+            },
+            before: async (request, context) => {
+              return uploadBeforeHook(request, context);
+            },
+          },
+          delete: { isAccessible: canEditmodels },
+          show: {
+            isVisible: false,
+          },
+        },
+        
+      },
     },
     {
         resource: AdminUser,

@@ -31,7 +31,11 @@ Totalslots:[{
       type:String,
       required:true
   },
-  timeanddateofslot:{
+  slotstarttime:{
+      type:Date,
+      required:true
+  },
+  slotendtime:{
       type:Date,
       required:true
   }  

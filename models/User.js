@@ -4,6 +4,7 @@ const userSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
+    default:null
   },
   email: {
     type: String,
@@ -12,22 +13,27 @@ const userSchema = new mongoose.Schema({
   },
   phoneno:{
     type: Number,
+    default:null
   },
   college:{
     type: String,
+    default:null
   },
   year:{
     type: String,
+    default:null,
   },
   Branch:{
     type: String,
+    default:null
   },
   password:{
     type: String,
     required: true,
   },
-  image:{
+  profilePhotoLocation:{
     type: String,
+    default:null
   },
   usercontestdetail:[
     {

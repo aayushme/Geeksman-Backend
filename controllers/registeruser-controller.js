@@ -64,7 +64,8 @@ const registerforcontest=async (req,res,next)=>{
               givenslot=i+1
               contest.availableslot[i]=(contest.availableslot[i]+1)
               newuser.slot.slotno=givenslot
-              newuser.slot.slottime=contest.Totalslots[i].timeanddateofslot
+              newuser.slot.slotstarttime=contest.Totalslots[i].slotstarttime
+              newuser.slot.slotendtime=contest.Totalslots[i].slotendtime
               newuser.contestname=contest.Contestname
               await newuser.save({session:sess})
               contest.registeredusers.push(newuser)
