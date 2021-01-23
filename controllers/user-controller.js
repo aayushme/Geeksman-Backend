@@ -46,9 +46,10 @@ var data = {
   to: newpendinguser.email,
   subject: 'Thanks for Registering',
   html:  `<h2>Hi  ${newpendinguser.name}</h2>
-    <p>Thanks for getting started with GeeksCode by Geeksman-The Coding Society!We need a little more information 
-    to complete your registration, including a confirmation of your email address. Click below to confirm your email address:
-    <a href="${process.env.BACKEND_URL}activate/user/${hash}">link</a> If you have problems, please paste the above URL into your web browser.</p>`
+    <p>Thanks for getting started with GeeksCode by Geeksman-The Coding Society!We need a little more information <br>
+    to complete your registration, including a confirmation of your email address.</p><br>
+    <p>Click below to confirm your email address:
+    <a href="${process.env.BACKEND_URL}activate/user/${hash}">link</a><br>If you have problems, please paste the above URL into your web browser.</p>`
 };
  
 mailgun.messages().send(data, function (error, body) {
@@ -218,7 +219,7 @@ const forgotpass=async (req,res,next)=>{
       from: '<cedept@geeksmanjcbust.in>',
       to: thisuser.email,
       subject: 'Reset Password',
-      html: `<h2>Hi ${thisuser.name}</h2>
+      html: `<h2>Hi ${thisuser.name},</h2>
        <p>We got a request for changing your password at GeeksCode by Geeksman-The Coding Society!</p>
         <p>Click below to change your password <a href="${process.env.BACKEND_URL}changepassword/${hash}">Link</a></p> 
         <p>If you have problems, please paste the above URL into your web browser. DONT CLICK THE LINK IF YOU HAVE NOT PLACED THIS REQUEST!!</p>`
