@@ -14,6 +14,7 @@ require('dotenv').config()
 const app = express();
 const server = require("http").createServer(app);
 app.set('view engine', 'ejs');
+app.use(cors())
 app.use(function (request, response, next) {
   response.header("Access-Control-Allow-Origin", "*");
   response.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
