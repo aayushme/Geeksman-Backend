@@ -58,7 +58,7 @@ mailgun.messages().send(data, function (error, body) {
   }
   console.log(body);
 });
-    res.json({message:'You have been registered,check your email address'})
+  return  res.json({message:'You have been registered,check your email address'})
 }catch(err){
     const error = new HttpError(
         "Signing up failed,please try again later",
@@ -230,7 +230,7 @@ const forgotpass=async (req,res,next)=>{
       }
       console.log(body);
     });
-    res.json({message:'Your request for password change has been initiated,please check your email'})
+   return res.json({message:'Your request for password change has been initiated,please check your email'})
    }
    else
    {
@@ -255,7 +255,7 @@ const resetPassword=async (req,res,next)=>{
      {  hashedpassword=await bcrypt.hash(password,8)
         thisuser.password=hashedpassword
         await thisuser.save(); 
-        res.status(200).json({message:"password reset successfully"})  
+      return  res.status(200).json({message:"password reset successfully"})  
      }
      else
      {

@@ -9,17 +9,18 @@ const submissionrouter=require('./routers/submissions')
 const adminrouter=require('./routers/admin')
 const verificationroute=require('./routers/verification')
 const registeredusersrouter=require('./routers/registerforcontest')
+const Testvalidationrouter=require('./routers/Testvalidation')
 const cors=require('cors')
 require('dotenv').config()
 const app = express();
 const server = require("http").createServer(app);
 app.set('view engine', 'ejs');
 app.use(cors())
-app.use(function (request, response, next) {
-  response.header("Access-Control-Allow-Origin", "*");
-  response.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
-});
+// app.use(function (request, response, next) {
+//   response.header("Access-Control-Allow-Origin", "*");
+//   response.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+//   next();
+// });
 
 
 //admin router
@@ -32,6 +33,7 @@ app.use(bodyparser.json());
 app.use(userrouter)
 app.use(contestrouter)
 app.use(questionrouter)
+app.use(Testvalidationrouter)
 app.use(verificationroute)
 app.use(registeredusersrouter)
 app.use(submissionrouter)

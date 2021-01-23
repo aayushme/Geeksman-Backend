@@ -3,8 +3,7 @@ const Answers=require('../models/Answers')
 const submissionhandler= async (req,res,next)=>{
     try{
         let totalScore=0;
-        const {email}=req.body;
-        console.log(email);
+        const {email}=req.body
      const {answer}=req.body;
       answer.forEach(async element => 
          {

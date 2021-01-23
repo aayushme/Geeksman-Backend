@@ -12,6 +12,10 @@ endtime:{
     type:Date,
     required:true
 },
+contestduration:{
+type:String,
+required:true
+},
 prize:{
     type:String,
     required:true

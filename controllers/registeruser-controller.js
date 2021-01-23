@@ -34,10 +34,10 @@ const registerforcontest=async (req,res,next)=>{
         return res.status(404).json({"error":'Could not register right now,please try again later'})
       }
       if(!contest){
-          res.status(404).json({"error":'Could not find the contest that you are trying to register for,please try again later'})
+         return res.status(404).json({"error":'Could not find the contest that you are trying to register for,please try again later'})
       }
       if(!user){
-          res.status(404).json({"error":'Could not find the user,please try again later'})
+         return res.status(404).json({"error":'Could not find the user,please try again later'})
       }
       let newuser=new RegisteredUser({
           Name:user.name,
@@ -106,9 +106,9 @@ const registerforcontest=async (req,res,next)=>{
           console.log(body);
         });
        }
-       res.status(200).json({message:'You have been registered,please check your email'})
+     return  res.status(200).json({message:'You have been registered,please check your email'})
       }catch(e){
-          res.status(500).json({"error":e})
+       return   res.status(500).json({"error":e})
       }
 }
 const updatedetails=async (req,res,next)=>{
