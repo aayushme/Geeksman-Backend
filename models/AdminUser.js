@@ -2,6 +2,7 @@ const mongoose=require('mongoose')
 const userSchema=new mongoose.Schema({
     email: { type: String, required: true },
     encryptedpassword: { type: String, required: true },
+    profilePhotoLocation:{type:String},
     role: { type: String, enum: ['admin', 'restricted'], required: true },
 })
 module.exports=mongoose.model('AdminUser',userSchema)

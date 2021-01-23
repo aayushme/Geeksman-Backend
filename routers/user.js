@@ -20,5 +20,5 @@ router.delete("/users/deleteuser/:uid", usercontroller.deleteuser);
 router.patch("/users/updateuser/:uid", usercontroller.updateuser);
 //required by frontend
 router.post("/forgotpassword",usercontroller.forgotpass);
-router.post("/getusercontests",usercontroller.getUserContest);
+router.get("/getusercontests/:uid",usercontroller.getUserContest);
 module.exports=router

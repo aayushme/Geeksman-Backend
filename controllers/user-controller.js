@@ -268,7 +268,7 @@ const resetPassword=async (req,res,next)=>{
   }
 }
 const getUserContest=async (req,res,next)=>{
-    const {uid}=req.body
+    const uid=req.params.uid
     let userwithcontests;
     try{
       userwithcontests=await User.findById(uid).populate('usercontestdetail')

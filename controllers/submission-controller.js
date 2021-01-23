@@ -12,6 +12,7 @@ const submissionhandler= async (req,res,next)=>{
               totalScore=totalScore+question.score;
           }
       });
+      
       let Participant=await Answers.create({
           email,
           totalScore

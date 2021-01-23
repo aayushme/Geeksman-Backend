@@ -42,10 +42,15 @@ const adminBro = new AdminBro({
                 show: false,
               },
             },
+            profilePhotoLocation:{
+              components:{
+                edit:AdminBro.bundle('./upload-image.tsx')
+              }
+            }
           },
           actions: {
             new: {
-              before: async (request) => {
+              before: async (request,context) => {
                 if (request.payload.password) {
                   request.payload = {
                     ...request.payload,
@@ -55,6 +60,7 @@ const adminBro = new AdminBro({
                     ),
                     password: undefined,
                   };
+                  
                 }
                 return request;
               },
