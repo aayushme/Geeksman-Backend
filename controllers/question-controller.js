@@ -1,9 +1,9 @@
 const Question=require('../models/Question')
 const Contest =require('../models/Contest')
-
+const jwt=require('jsonwebtoken')
 const getshuffledpertest=async (req,res,next)=>{
     let testquestions=[];
-let noofquestions;
+    let noofquestions;
     const token = req.headers.authorization.split(" ")[1]; //authorization 'Bearer token'
     if (!token) {
       return res.status(404).json({message:'Could not start your test!!'})
@@ -42,8 +42,6 @@ let noofquestions;
          return res.status(500).json({"error":error})
      }
      }
-    
-
 const getallquestions=async (req,res,next)=>{
     try{
        const questions=await Question.find({});
