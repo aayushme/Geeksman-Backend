@@ -4,7 +4,7 @@ const testvalidation=async (req,res,next)=>{
 let time,contest,token;
 const {cid,uid}=req.body
 try{
-contest=await Contest.findById(contestId)
+contest=await Contest.findById(cid)
 }catch(e){
 return res.status(404).json({error:e})
 }
