@@ -1,7 +1,26 @@
 const Question=require('../models/Question')
-let testquestions=[];
-const noofquestions=1;
+const Contest =require('../models/Contest')
+
 const getshuffledpertest=async (req,res,next)=>{
+    let testquestions=[];
+let noofquestions;
+    const token = req.headers.authorization.split(" ")[1]; //authorization 'Bearer token'
+    if (!token) {
+      return res.status(404).json({message:'Could not start your test!!'})
+    }
+    const decodedToken = jwt.verify(token,process.env.JWT_KEY);
+    const contestId=decodedToken.contestId
+    let contest;
+    try{
+        contest=await Contest.findById(contestId)
+    }catch(e){
+        return res.json({message:'Could not find the contest!!'})
+    }
+    if(contest){
+      noofquestions=contest.questions
+    }else{
+        return res.json({message:'Contest does not exists'})
+    }
     try{
         const questions=await Question.find({});
         shuffle(questions);        

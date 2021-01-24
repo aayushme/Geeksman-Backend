@@ -1,7 +1,7 @@
 const express=require('express')
 const router=express.Router()
 const questioncontroller=require('../controllers/question-controller')
-router.get('/testquestions',questioncontroller.getshuffledpertest)
+router.post('/testquestions',questioncontroller.getshuffledpertest)
 //get all questions
 router.get('/questions',questioncontroller.getallquestions)
 //get questionbyid

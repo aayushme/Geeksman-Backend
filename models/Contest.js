@@ -12,6 +12,10 @@ endtime:{
     type:Date,
     required:true
 },
+questions:{
+    type:Number,
+    required:true,
+},
 contestduration:{
 type:String,
 required:true
