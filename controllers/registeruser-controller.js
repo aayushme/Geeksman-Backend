@@ -2,7 +2,6 @@ const RegisteredUser=require('../models/registeredUser')
 const User=require('../models/User')
 const Contest=require('../models/Contest');
 const mongoose=require('mongoose')
-const mongooseUniqueValidator = require('mongoose-unique-validator');
 const getUsers=async (req,res,next)=>{
     let contestid=req.params.cid
     let contestwithregisteredusers

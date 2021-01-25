@@ -1,8 +1,10 @@
 const Question = require("../models/Question");
 const User=require('../models/User')
+const jwt=require('jsonwebtoken')
 const submissionhandler = async (req, res, next) => {
+  const { answer } = req.body;
   try {
-    let totalScore = 0;
+    let totalScore=0;
     const token = req.headers.authorization.split(" ")[1]; //authorization 'Bearer token'
     if (!token) {
       return res
@@ -17,7 +19,6 @@ const submissionhandler = async (req, res, next) => {
     }
     const contestid = decodedToken.contestId;
     const uid=decodedToken.userId
-    const { answer } = req.body;
     let contestuser=await User.findById(uid).populate('usercontestdetail')
     if(!contestuser||contestuser.usercontestdetail.length===0){
         return res.status(404).json({message:'Could not find you as a registered candidate'})
@@ -39,7 +40,7 @@ const submissionhandler = async (req, res, next) => {
     await user.save();
     return res.status(200).json({ Status: "Quiz Submitted Successfully" });
   } catch (error) {
-    console.log(error);
+    console.log(error)
     return res.status(400).json({ error: error });
   }
 };
