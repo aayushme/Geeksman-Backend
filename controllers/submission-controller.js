@@ -28,11 +28,11 @@ const submissionhandler = async (req, res, next) => {
         return res.status(404).json({message:'Could not find you as a registered candidate'})
     }
     const questions = await Question.find({ contestid });
-    answer.forEach(async (element) => {
+    answer.forEach((element) => {
       let question = questions.find(
-        (question) => question._id === element.Question_Id
+        (question) => question._id == element.Question_Id
       );
-      if (element.optionchosen === question.correctvalue) {
+      if (element.optionchosen == question.correctvalue) {
         totalScore = totalScore + question.score;
       }
     });
