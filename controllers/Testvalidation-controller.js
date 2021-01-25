@@ -1,8 +1,16 @@
 const Contest=require('../models/Contest')
 const jwt=require('jsonwebtoken')
+const User=require('../models/User')
 const testvalidation=async (req,res,next)=>{
 let time,contest,token;
 const {cid,uid}=req.body
+const user=await User.findById(uid).populate('usercontestdetail')
+if(user||user.usercontestdetail.length!=0){
+    const finduser=user.usercontestdetail.find(user=>user.ContestId==cid)
+    if(finduser.testgiven){
+        return res.json({message:'You have already given the test'});
+    }
+}
 try{
 contest=await Contest.findById(cid)
 }catch(e){

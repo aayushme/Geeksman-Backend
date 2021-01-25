@@ -44,6 +44,10 @@ const registerSchema=new mongoose.Schema({
                 type:String,
                 default:null
             },
+            testgiven:{
+                type:Boolean,
+                default:false,
+            },
             ContestId:{
                 type:String,
                 default:null

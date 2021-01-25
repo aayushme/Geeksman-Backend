@@ -7,5 +7,3 @@ import Component3 from '../components/upload-image.edit'
 AdminBro.UserComponents.Component3 = Component3
 import Component4 from '../components/upload-image.list'
 AdminBro.UserComponents.Component4 = Component4
-import Component5 from '../routers/upload-image'
-AdminBro.UserComponents.Component5 = Component5

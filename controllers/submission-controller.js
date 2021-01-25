@@ -20,10 +20,11 @@ const submissionhandler = async (req, res, next) => {
     const contestid = decodedToken.contestId;
     const uid=decodedToken.userId
     let contestuser=await User.findById(uid).populate('usercontestdetail')
+    console.log(contestuser)
     if(!contestuser||contestuser.usercontestdetail.length===0){
         return res.status(404).json({message:'Could not find you as a registered candidate'})
     }
-    const user=contestuser.usercontestdetail.find((user)=>user.ContestId==contestid)
+    const user=contestuser.usercontestdetail.find((user)=>user.ContestId===contestid)
     if(!user){
         return res.status(404).json({message:'Could not find you as a registered candidate'})
     }
@@ -37,6 +38,7 @@ const submissionhandler = async (req, res, next) => {
       }
     });
     user.marks = totalScore;
+    user.testgiven=true
     await user.save();
     return res.status(200).json({ Status: "Quiz Submitted Successfully" });
   } catch (error) {

@@ -87,8 +87,6 @@ const adminBro = new AdminBro({
               list: AdminBro.bundle('../components/upload-image.list.tsx'),
             },
           },
-         
-        
         },
         actions: {
           new: {
@@ -132,11 +130,7 @@ const adminBro = new AdminBro({
                 show: false,
               },
             },
-            profilePhotoLocation:{
-              components:{
-                edit:AdminBro.bundle('./upload-image.tsx')
-              }
-            }
+
           },
           actions: {
             new: {
