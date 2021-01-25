@@ -23,7 +23,7 @@ const submissionhandler = async (req, res, next) => {
     if(!contestuser||contestuser.usercontestdetail.length===0){
         return res.status(404).json({message:'Could not find you as a registered candidate'})
     }
-    const user=contestuser.usercontestdetail.find((user)=>user.ContestId===contestid)
+    const user=contestuser.usercontestdetail.find((user)=>user.ContestId==contestid)
     if(!user){
         return res.status(404).json({message:'Could not find you as a registered candidate'})
     }
