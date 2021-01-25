@@ -22,7 +22,7 @@ const getshuffledpertest=async (req,res,next)=>{
         return res.json({message:'Contest does not exists'})
     }
     try{
-        const questions=await Question.find({});
+        const questions=await Question.find({contestid:contestId},'-correctvalue');
         shuffle(questions);        
         function shuffle(array) {
          for (let i = array.length - 1; i > 0; i--) {

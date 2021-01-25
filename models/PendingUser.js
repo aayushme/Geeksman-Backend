@@ -28,10 +28,6 @@ const PendinguserSchema = new mongoose.Schema({
   },
   image:{
     type: String,
-  },
-  isLogin:{
-      type:Boolean,
-      default:false
   }
 });
 PendinguserSchema.plugin(mongoosevalidator);

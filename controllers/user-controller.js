@@ -32,7 +32,6 @@ const newpendinguser = new PendingUser({
     name,
     email,
     password: hashedpassword,
-    isLogin:false
   });
 try{
 await newpendinguser.save();
@@ -118,7 +117,6 @@ const loginhandler=async (req,res,next)=>{
       );
       return next(error);
     }
-    existingUser.isLogin=true;
     await existingUser.save();
     res
       .status(201)

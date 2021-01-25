@@ -41,10 +41,6 @@ const userSchema = new mongoose.Schema({
       ref:'RegisteredUser'
     }
   ],
-  isLogin:{
-      type:Boolean,
-      default:false
-  }
 });
 userSchema.plugin(mongoosevalidator);
 module.exports = mongoose.model("User", userSchema);
