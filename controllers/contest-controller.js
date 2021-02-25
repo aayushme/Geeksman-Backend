@@ -1,10 +1,7 @@
 const Contest = require('../models/Contest')
 const HttpError=require('../models/Http-error')
-
 const createcontest=async (req,res,next)=>{
 const {name,starttime,endtime,prize,registeredusers,contestdetail,rules}=req.body
-
-
 let contest=new Contest({
   name,
   starttime,

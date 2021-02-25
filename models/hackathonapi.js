@@ -1,0 +1,39 @@
+const mongoose=require('mongoose')
+const FestEventRegisterSchema=new mongoose.Schema({
+            TeamName:{
+                type:String,    
+            },
+            Teamlead:{
+                type:String,
+            },
+            TeamMembers:{
+              type:[String],
+              minlength:3,
+              maxlength:4
+            },
+            email:{
+                type:String,   
+            },
+            PhoneNo:{
+                type:Number,
+            },
+            college:{
+                type:String
+            },
+            year:{
+                type:String
+            },
+            isshortlisted:{
+                type:Boolean,
+                default:null
+            },
+            Hackathonname:{
+                type:String,
+                default:null
+            },
+            HackathonId:{
+                type:String,
+                default:null
+            },
+})
+module.exports=mongoose.model("FestEventRegisteredUser",FestEventRegisterSchema);

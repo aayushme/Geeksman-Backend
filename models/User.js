@@ -41,6 +41,12 @@ const userSchema = new mongoose.Schema({
       ref:'RegisteredUser'
     }
   ],
+  usereventdetail:[
+    {
+      type:mongoose.Types.ObjectId,
+      ref:'FestEventRegisteredUser'
+    }
+  ]
 });
 userSchema.plugin(mongoosevalidator);
 module.exports = mongoose.model("User", userSchema);
