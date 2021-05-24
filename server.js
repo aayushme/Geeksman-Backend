@@ -10,17 +10,13 @@ const adminrouter=require('./routers/admin')
 const verificationroute=require('./routers/verification')
 const registeredusersrouter=require('./routers/registerforcontest')
 const Testvalidationrouter=require('./routers/Testvalidation')
+const admin1router=require('./routers/admin1')
 const cors=require('cors')
 require('dotenv').config()
 const app = express();
 const server = require("http").createServer(app);
 app.set('view engine', 'ejs');
 app.use(cors())
-// app.use(function (request, response, next) {
-//   response.header("Access-Control-Allow-Origin", "*");
-//   response.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-//   next();
-// });
 
 
 //admin router
@@ -39,6 +35,7 @@ app.use(Testvalidationrouter)
 app.use(verificationroute)
 app.use(registeredusersrouter)
 app.use(submissionrouter)
+app.use(admin1router)
 app.use((req, res, next) => {
     throw new HttpError("Could not find this route", 404);
   });
