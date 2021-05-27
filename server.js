@@ -16,8 +16,6 @@ const app = express();
 const server = require("http").createServer(app);
 app.set('view engine', 'ejs');
 app.use(cors())
-
-
 //image location
 app.use('/uploads', express.static('uploads'));
 //body-parser
@@ -25,7 +23,7 @@ app.use(bodyparser.urlencoded({ extended: false }));
 app.use(bodyparser.json());
 //rest-routers
 app.get("/",(req,res)=>{
-  res.send("<h1>HELLO how </h1>")
+  res.send("<h1>HELLO</h1>")
 })
 app.use(userrouter)
 app.use(contestrouter)

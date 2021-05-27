@@ -1,6 +1,8 @@
 const Admin=require('../models/AdminUser')
 const bcrypt = require("bcryptjs");
-const jwt=require('jsonwebtoken')
+const jwt=require('jsonwebtoken');
+const { response } = require('express');
+//creating new admins
 const createadmin=async (req,res,next)=>{
     const {adminname,adminemail,adminPassword}=req.body
     let admin
@@ -40,6 +42,7 @@ const createadmin=async (req,res,next)=>{
     });      
 }
 
+//hanling the login of admins
 const loginadmin= async (req,res,next)=>{
  const { adminemail, adminPassword } = req.body;
  let existingAdmin;
@@ -84,7 +87,37 @@ const loginadmin= async (req,res,next)=>{
     token,
   });
 }
+
+//Returning all the admins present
+const getadmin=async (req,res,next)=>{
+  let admins;
+  try{
+    admins=await Admin.find({})
+  }catch(e){
+    return res.status(500).json({"error":e})
+  }
+  if(!admins||admins.length===0){
+    return res.status(404).json({"message":"There are no current admins"})
+  }
+  return res.status(200).json({admins:admins.map(admin=>admin.toObject({getters:true}))})
+}
+
+const deleteadmin=async (req,res,next)=>{
+  let admin;
+  let adminid=req.params.aid
+  try{
+   admin=await Admin.findById(adminid)
+  }catch(e){
+    return res.status(500).json({e})
+  }
+  if(admin){
+    await admin.remove()
+  }
+  return res.json({"message":"Deleted Successfully!!"})
+}
 module.exports={
     createadmin,
-    loginadmin
+    loginadmin,
+    getadmin,
+    deleteadmin
 }
