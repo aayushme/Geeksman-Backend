@@ -1,8 +1,21 @@
 const mongoose=require('mongoose')
-const userSchema=new mongoose.Schema({
-    email: { type: String, required: true },
-    encryptedpassword: { type: String, required: true },
-    profilePhotoLocation:{type:String},
-    role: { type: String, enum: ['admin', 'restricted'], required: true },
+const mongooseValidator=require('mongoose-unique-validator')
+const AdminSchema=new mongoose.Schema({
+   adminname:{
+     type:String,
+     required:true
+   },
+   adminemail:{
+     type:String,
+     required:true,
+     unique:true
+   },
+   adminPassword:{
+     type:String,
+     required:true,
+   },
+
+
 })
-module.exports=mongoose.model('AdminUser',userSchema)
+AdminSchema.plugin(mongooseValidator)
+module.exports=mongoose.model('Admin',AdminSchema)

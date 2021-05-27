@@ -1,0 +1,10 @@
+version: "3"
+services: 
+    node-app:
+        build: .
+
+    mongo:
+        image: 
+        environment: 
+            - MONGO_INITDB_ROOT_USERNAME=Parag
+            - MONGO_INITDB_ROOT_PASSWORD=Hello

@@ -1,4 +1,4 @@
-const Admin=require('../models/AdminUser1')
+const Admin=require('../models/AdminUser')
 const bcrypt = require("bcryptjs");
 const jwt=require('jsonwebtoken')
 const createadmin=async (req,res,next)=>{

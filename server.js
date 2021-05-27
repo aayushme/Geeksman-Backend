@@ -6,11 +6,10 @@ const userrouter=require('./routers/user')
 const contestrouter=require('./routers/Contest')
 const questionrouter=require('./routers/question')
 const submissionrouter=require('./routers/submissions')
-const adminrouter=require('./routers/admin')
 const verificationroute=require('./routers/verification')
 const registeredusersrouter=require('./routers/registerforcontest')
 const Testvalidationrouter=require('./routers/Testvalidation')
-const admin1router=require('./routers/admin1')
+const adminrouter=require('./routers/admin')
 const cors=require('cors')
 require('dotenv').config()
 const app = express();
@@ -19,15 +18,15 @@ app.set('view engine', 'ejs');
 app.use(cors())
 
 
-//admin router
-app.use('/admin',adminrouter)
 //image location
 app.use('/uploads', express.static('uploads'));
 //body-parser
 app.use(bodyparser.urlencoded({ extended: false }));
 app.use(bodyparser.json());
 //rest-routers
-
+app.get("/",(req,res)=>{
+  res.send("<h1>HELLO how </h1>")
+})
 app.use(userrouter)
 app.use(contestrouter)
 app.use(questionrouter)
@@ -35,7 +34,8 @@ app.use(Testvalidationrouter)
 app.use(verificationroute)
 app.use(registeredusersrouter)
 app.use(submissionrouter)
-app.use(admin1router)
+app.use(adminrouter)
+
 app.use((req, res, next) => {
     throw new HttpError("Could not find this route", 404);
   });
@@ -58,6 +58,7 @@ app.use((req, res, next) => {
     }
   ).then(()=>{
     server.listen(port, () => {
+     
       console.log("server is running on port",port);
     });
   
