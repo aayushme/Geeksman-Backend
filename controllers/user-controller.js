@@ -62,7 +62,7 @@ const signuphandler = async (req, res, next) => {
       }
       console.log(body);
     });
-    return res.json({ message: 'You have been registered,check your email address' })
+    return res.json({message:'You have been registered,check your email address' })
   } catch (err) {
     const error = new HttpError(
       "Signing up failed,please try again later",
@@ -190,7 +190,7 @@ const deleteuser = async (req, res, next) => {
   } catch (err) {
     return next(new HttpError('Could not delete the user,please try again later', 500))
   }
-  res.status(200).json({ message: 'User deleted' })
+  res.status(200).json({message :'User deleted' })
 }
 const getallusers = async (req, res, next) => {
   let users;
@@ -229,14 +229,14 @@ const forgotpass = async (req, res, next) => {
         }
         console.log(body);
       });
-      return res.json({ message: 'Your request for password change has been initiated,please check your email' })
+      return res.json({message :'Your request for password change has been initiated,please check your email' })
     }
     else {
-      return res.status(500).json({ "error": "User Not found!" })
+      return res.status(500).json({ message: "User Not found!" })
     }
   }
   catch (error) {
-    return res.status(404).json({ "error": error })
+    return res.status(404).json({ message: error })
   }
 }
 const resetPassword = async (req, res, next) => {
@@ -245,14 +245,14 @@ const resetPassword = async (req, res, next) => {
     const { password, id } = req.body
     const thisuser = await User.findById(id);
     if (!thisuser) {
-      return res.status(422).json({ message: 'User does not exists' })
+      return res.status(422).json({message:'User does not exists' })
     }
     let hashedpassword;
     if (thisuser) {
       hashedpassword = await bcrypt.hash(password, 8)
       thisuser.password = hashedpassword
       await thisuser.save();
-      return res.status(200).json({ message: "password reset successfully" })
+      return res.status(200).json({message:"password reset successfully" })
     }
     else {
       return res.status(500).json({ "error": "User Not found!" })
@@ -271,7 +271,7 @@ const getUserContest = async (req, res, next) => {
     return res.status(404).json({ error: e })
   }
   if (!userwithcontests || userwithcontests.usercontestdetail.length === 0) {
-    return res.status(404).json({ message: 'There are no available previous contests done by you.' })
+    return res.status(404).json({message:'There are no available previous contests done by you.' })
   }
   return res.status(200).json({ data: userwithcontests.usercontestdetail })
 }
@@ -310,7 +310,7 @@ const createuserbyadmin = async (req, res, next) => {
     email,
     password:hashedpassword
   })
-  return res.status(201).json({"message":'User created successfully!!'})
+  return res.status(201).json({message:'User created successfully!!'})
 
 }
 module.exports = {

@@ -65,6 +65,7 @@ const getquestionbyid=async (req,res,next)=>{
         }
 }
 const createquestion=async (req,res,next)=>{
+    
     try {
         const { id }=req.body
         const { question } = req.body
@@ -85,6 +86,20 @@ const createquestion=async (req,res,next)=>{
     } catch (error) {
         return res.status(500).json({"error":error})
     }
+}
+
+const getcontestquestions=async (req,res,next)=>{
+const contestid=req.params.cid
+let questionsbycontestid;
+try{
+questionsbycontestid=await Contest.findById(contestid).populate("questions")
+}catch(e){
+    return res.status(500).json({message:e})
+}
+if(!questionsbycontestid||questionsbycontestid.questions.length===0){
+    return res.status(404).json({message:"There are no questions"})
+}
+return res.status(200).json({questions:questionsbycontestid.questions})
 }
 const updatequestion=async (req,res,next)=>{
     try {
@@ -134,6 +149,7 @@ const deletequestion=async (req,res,next)=>{
     }
 }
 module.exports={
+    getcontestquestions,
     getshuffledpertest,
     getallquestions,
     getquestionbyid,

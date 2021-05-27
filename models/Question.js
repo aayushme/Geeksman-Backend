@@ -18,10 +18,6 @@ const QuestionSchema = new mongoose.Schema({
       },
     },
   ],
-  contestid:{
-     type:mongoose.Types.ObjectId,
-     ref:'Contest'
-  },
   correctvalue:{
    type:String,
    required:true

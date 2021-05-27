@@ -12,10 +12,16 @@ endtime:{
     type:Date,
     required:true
 },
-questions:{
+noofquestions:{
     type:Number,
     required:true,
 },
+questions:[
+{
+    type:mongoose.Types.ObjectId,
+    ref:'Question'
+}
+],
 contestduration:{
 type:String,
 required:true

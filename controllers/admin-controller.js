@@ -12,7 +12,7 @@ const createadmin=async (req,res,next)=>{
        return res.status(500).json({"error":e})
     }
     if(admin){
-        return res.json({"message":"Admin with this email already exists"})
+        return res.json({message:"Admin with this email already exists"})
     }
 
     //hashing the password first before creating the admin
@@ -38,7 +38,7 @@ const createadmin=async (req,res,next)=>{
      }
 
     res.status(201).json({
-        "message":"Admin created successfully!!!"
+        message:"Admin created successfully!!!"
     });      
 }
 
@@ -53,7 +53,7 @@ const loginadmin= async (req,res,next)=>{
  }
  
  if(!existingAdmin){
-     return res.status(404).json({"message":"Invalid credentials,could not log you in"})
+     return res.status(404).json({message:"Invalid credentials,could not log you in"})
  }
  let isvalidpasword = false;
  try {
@@ -63,7 +63,7 @@ const loginadmin= async (req,res,next)=>{
  }
 
  if(!isvalidpasword){
-     return res.status(401).json({"message":"Invalid credentials,could not log you in"})
+     return res.status(401).json({message:"Invalid credentials,could not log you in"})
  }
 
  let token;
@@ -97,7 +97,7 @@ const getadmin=async (req,res,next)=>{
     return res.status(500).json({"error":e})
   }
   if(!admins||admins.length===0){
-    return res.status(404).json({"message":"There are no current admins"})
+    return res.status(404).json({message:"There are no current admins"})
   }
   return res.status(200).json({admins:admins.map(admin=>admin.toObject({getters:true}))})
 }
@@ -113,7 +113,7 @@ const deleteadmin=async (req,res,next)=>{
   if(admin){
     await admin.remove()
   }
-  return res.json({"message":"Deleted Successfully!!"})
+  return res.json({message:"Deleted Successfully!!"})
 }
 module.exports={
     createadmin,

@@ -5,6 +5,7 @@ router.post('/testquestions',questioncontroller.getshuffledpertest)
 //get all questions
 router.get('/questions',questioncontroller.getallquestions)
 //get questionbyid
+router.get('/questions/:cid',questioncontroller.getcontestquestions)
 router.get('/questions/:id',questioncontroller.getquestionbyid)
 router.post('/questions',questioncontroller.createquestion)  
 router.patch('/questions/:id',questioncontroller.updatequestion)
