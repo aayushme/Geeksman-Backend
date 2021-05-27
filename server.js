@@ -10,6 +10,7 @@ const verificationroute=require('./routers/verification')
 const registeredusersrouter=require('./routers/registerforcontest')
 const Testvalidationrouter=require('./routers/Testvalidation')
 const adminrouter=require('./routers/admin')
+const Pendinguserrouter=require('./routers/Pendinguser')
 const cors=require('cors')
 require('dotenv').config()
 const app = express();
@@ -25,6 +26,7 @@ app.use(bodyparser.json());
 app.get("/",(req,res)=>{
   res.send("<h1>HELLO</h1>")
 })
+app.use(Pendinguserrouter)
 app.use(userrouter)
 app.use(contestrouter)
 app.use(questionrouter)
