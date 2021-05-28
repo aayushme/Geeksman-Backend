@@ -11,22 +11,24 @@ const registeredusersrouter=require('./routers/registerforcontest')
 const Testvalidationrouter=require('./routers/Testvalidation')
 const adminrouter=require('./routers/admin')
 const Pendinguserrouter=require('./routers/Pendinguser')
-const uploadfilecontroller=require('./routers/Upload')
+const uploadfilecontroller=require('./routers/CsvUpload')
 const cors=require('cors')
 require('dotenv').config()
 const app = express();
 const server = require("http").createServer(app);
 app.set('view engine', 'ejs');
+app.use(express.static('./public'))
 app.use(cors())
-//image location
-app.use(uploadfilecontroller)
 //body-parser
 app.use(bodyparser.urlencoded({ extended: false }));
 app.use(bodyparser.json());
+
 //rest-routers
+
 app.get("/",(req,res)=>{
-  res.send("<h1>HELLO</h1>")
+  res.render('upload')
 })
+app.use(uploadfilecontroller)
 app.use(Pendinguserrouter)
 app.use(userrouter)
 app.use(contestrouter)
@@ -62,8 +64,6 @@ app.use((req, res, next) => {
      
       console.log("server is running on port",port);
     });
-  
   }).catch((err)=>{
     console.log(err)
   })
-  
