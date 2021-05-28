@@ -3,8 +3,12 @@ services:
     node-app:
         build: .
 
-    # mongo:
-    #     image: 
-    #     environment: 
-    #         - MONGO_INITDB_ROOT_USERNAME=Parag
-    #         - MONGO_INITDB_ROOT_PASSWORD=Hello
+    mongo:
+        image: mongo
+        environment: 
+            - MONGO_INITDB_ROOT_USERNAME=Parag
+            - MONGO_INITDB_ROOT_PASSWORD=Hello
+        volumes: 
+            - mongo-db:/data/db
+volumes:
+    mongo-db:            

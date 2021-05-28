@@ -11,6 +11,7 @@ const registeredusersrouter=require('./routers/registerforcontest')
 const Testvalidationrouter=require('./routers/Testvalidation')
 const adminrouter=require('./routers/admin')
 const Pendinguserrouter=require('./routers/Pendinguser')
+const uploadfilecontroller=require('./routers/Upload')
 const cors=require('cors')
 require('dotenv').config()
 const app = express();
@@ -18,7 +19,7 @@ const server = require("http").createServer(app);
 app.set('view engine', 'ejs');
 app.use(cors())
 //image location
-app.use('/uploads', express.static('uploads'));
+app.use(uploadfilecontroller)
 //body-parser
 app.use(bodyparser.urlencoded({ extended: false }));
 app.use(bodyparser.json());
