@@ -1,6 +1,7 @@
 const Question=require('../models/Question')
 const Contest =require('../models/Contest')
 const jwt=require('jsonwebtoken')
+const mongoose=require('mongoose')
 const getshuffledpertest=async (req,res,next)=>{
     let testquestions=[];
     let noofquestions;
@@ -64,28 +65,44 @@ const getquestionbyid=async (req,res,next)=>{
             return res.status(500).json({"error":error})
         }
 }
+
+
+//Create questions handler
 const createquestion=async (req,res,next)=>{
-    
+    const contestid=req.params.cid
+    let contest;
+    try{
+       contest=await Contest.findById(contestid)
+    }catch(e){
+        return res.status(404).json({message:e})
+    }
+    if(!contest){
+        return res.status(404).json({message:'There is no contest present'})
+    }
+    const {question,image,options,correctvalue,score}=req.body
+    let questions
     try {
-        const { id }=req.body
-        const { question } = req.body
-        const { image } = req.body
-        const { options } = req.body
-        const {correctValue}=req.body
-        const {score}=req.body
-        const questions = await Question.create({
-            id,
+       
+         questions = await Question.create({
             question,
             image,
             options,
-            correctValue,
+            correctvalue,
             score
         })
-
-        return res.status(201).json(questions)
     } catch (error) {
-        return res.status(500).json({"error":error})
+        return res.status(500).json({message:error})
     }
+
+    //Started a mongoose session and transaction if anything fails changes rolls back
+    const sess=await mongoose.startSession();
+    sess.startTransaction();
+    await questions.save({session:sess})
+    contest.questions.push(questions)
+    await contest.save({session:sess})
+    await sess.commitTransaction();
+    
+    return res.status(201).json({message:"Created successfully"})
 }
 
 const getcontestquestions=async (req,res,next)=>{

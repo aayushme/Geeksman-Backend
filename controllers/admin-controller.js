@@ -49,7 +49,7 @@ const loginadmin= async (req,res,next)=>{
  try {
    existingAdmin = await Admin.findOne({ adminemail });
  } catch (err) {
-   return res.status(500).json({"error":e})
+   return res.status(500).json({message:e})
  }
  
  if(!existingAdmin){
@@ -59,7 +59,7 @@ const loginadmin= async (req,res,next)=>{
  try {
    isvalidpasword = await bcrypt.compare(adminPassword, existingAdmin.adminPassword);
  } catch (err) {
-   return res.status(500).json({"error":e});
+   return res.status(500).json({message:e});
  }
 
  if(!isvalidpasword){

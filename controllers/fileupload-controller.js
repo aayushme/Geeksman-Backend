@@ -7,6 +7,11 @@ function importCsvData2MongoDB(filePath){
         .fromFile(filePath)
         .then((jsonObj)=>{
             console.log(jsonObj);
+            
+            // let questions=jsonObj.map((obj)=>{
+            //     return {question:}
+            // })
+
             fs.unlinkSync(filePath);
         })
 }

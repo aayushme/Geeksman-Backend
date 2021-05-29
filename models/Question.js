@@ -1,26 +1,32 @@
 const mongoose = require("mongoose");
 const QuestionSchema = new mongoose.Schema({
-  id: String,
-  question: String,
-  profilePhotoLocation: {
+  question: {
+    type:String,
+    default:null
+  },
+  questionimageLocation: {
     type: String,
     required: false,
+    default:null
   },
   options:[
     {
       option:{
         type:String,
         required: true,
+        default:null
       },
       value: {
         type: String,
         required: true,
+        default:null
       },
     },
   ],
   correctvalue:{
    type:String,
-   required:true
+   required:true,
+   default:null
   },
   score: Number,
 });

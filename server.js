@@ -19,12 +19,13 @@ const server = require("http").createServer(app);
 app.set('view engine', 'ejs');
 app.use(express.static('./public'))
 app.use(cors())
+//for trusting the headers attached by nginx
+app.enable("trust proxy")
 //body-parser
 app.use(bodyparser.urlencoded({ extended: false }));
 app.use(bodyparser.json());
 
 //rest-routers
-
 app.get("/",(req,res)=>{
   res.render('upload')
 })
