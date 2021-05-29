@@ -4,7 +4,7 @@ const QuestionSchema = new mongoose.Schema({
     type:String,
     default:null
   },
-  questionimageLocation: {
+  image: {
     type: String,
     required: false,
     default:null
@@ -28,6 +28,10 @@ const QuestionSchema = new mongoose.Schema({
    required:true,
    default:null
   },
-  score: Number,
+  score:{
+    type:Number,
+    required:true,
+    default:null
+  }
 });
 module.exports = mongoose.model("Question", QuestionSchema);
