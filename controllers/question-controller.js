@@ -84,6 +84,7 @@ const createquestion=async (req,res,next)=>{
 
     //First upload image to cloudinary and get url
     let imageresponse;
+    console.log(image)
     try{
         imageresponse=await cloudinary.uploader.upload(image,{upload_preset:'Question-images'})
     }catch(e){
@@ -91,7 +92,6 @@ const createquestion=async (req,res,next)=>{
     }
     let questions
     try {
-       
          questions = await Question.create({
             question,
             image:imageresponse.secure_url,
@@ -100,7 +100,7 @@ const createquestion=async (req,res,next)=>{
             score
         })
     } catch (error) {
-        return res.status(500).json({message:error})
+        return res.status(500).json({message:"cannot create questions"},{questions})
     }
     //Started a mongoose session and transaction if anything fails changes rolls back
     const sess=await mongoose.startSession();
