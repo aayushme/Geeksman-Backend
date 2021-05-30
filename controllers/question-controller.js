@@ -109,7 +109,6 @@ const createquestion=async (req,res,next)=>{
     contest.questions.push(questions)
     await contest.save({session:sess})
     await sess.commitTransaction();
-    
     return res.status(201).json({message:"Created successfully"})
 }
 

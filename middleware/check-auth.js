@@ -10,6 +10,8 @@ module.exports = (req, res, next) => {
       throw new HttpError("Authentication failed!", 401);
     }
     const decodedToken = jwt.verify(token,process.env.JWTADMIN_KEY);
+    if(!decodedToken)
+    throw new HttpError("Authentication failed!",401)
     // req.adminData = { adminid:decodedToken.adminid };
     next();
   } catch (err) {
