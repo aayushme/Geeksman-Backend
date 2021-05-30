@@ -4,7 +4,7 @@ const QuestionSchema = new mongoose.Schema({
     type:String,
     default:null
   },
-  image: {
+  image:{
     type: String,
     default:null
   },
@@ -28,7 +28,7 @@ const QuestionSchema = new mongoose.Schema({
    default:null
   },
   score:{
-    type:Number,
+    type:String,
     required:true,
     default:null
   }
