@@ -1,6 +1,7 @@
 const Question=require('../models/Question')
 const Contest =require('../models/Contest')
 const jwt=require('jsonwebtoken')
+const {cloudinary}=require('../Cloudinaryconfig/Cloudinary')
 const mongoose=require('mongoose')
 const getshuffledpertest=async (req,res,next)=>{
     let testquestions=[];
@@ -80,12 +81,20 @@ const createquestion=async (req,res,next)=>{
         return res.status(404).json({message:'There is no contest present'})
     }
     const {question,image,options,correctvalue,score}=req.body
+
+    //First upload image to cloudinary and get url
+    let imageresponse;
+    try{
+        imageresponse=await cloudinary.uploader.upload(image,{upload_preset:'Question-images'})
+    }catch(e){
+        return res.status(500).json({message:'Image upload failed!!'})
+    }
     let questions
     try {
        
          questions = await Question.create({
             question,
-            image,
+            image:imageresponse.secure_url,
             options,
             correctvalue,
             score
@@ -93,7 +102,6 @@ const createquestion=async (req,res,next)=>{
     } catch (error) {
         return res.status(500).json({message:error})
     }
-
     //Started a mongoose session and transaction if anything fails changes rolls back
     const sess=await mongoose.startSession();
     sess.startTransaction();
