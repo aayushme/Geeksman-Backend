@@ -12,6 +12,7 @@ const Testvalidationrouter=require('./routers/Testvalidation')
 const adminrouter=require('./routers/admin')
 const Pendinguserrouter=require('./routers/Pendinguser')
 const uploadfilecontroller=require('./routers/CsvUpload')
+const imageuploadrouter=require('./routers/Image-upload')
 const cors=require('cors')
 require('dotenv').config()
 const app = express();
@@ -29,6 +30,7 @@ app.use(bodyparser.json());
 app.get("/",(req,res)=>{
   res.render('upload')
 })
+app.use(imageuploadrouter)
 app.use(uploadfilecontroller)
 app.use(Pendinguserrouter)
 app.use(userrouter)
