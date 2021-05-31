@@ -1,0 +1,36 @@
+const mongoose=require('mongoose')
+const memberSchema=new mongoose.Schema({
+name:{
+    type:String,
+    required:true
+},
+post:{
+    type:String,
+    default:null
+},
+companyname:{
+    type:String,
+    default:null
+},
+year:{
+type:String,
+required:true
+},
+image:{
+    type:String,
+    required:true
+},
+linkedin:{
+    type:String,
+    required:true
+},
+facebook:{
+    type:String,
+    required:true
+},
+instagram:{
+     type:String,
+     required:String
+}
+})
+module.exports=mongoose.model('Member',memberSchema)

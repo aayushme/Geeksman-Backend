@@ -79,7 +79,7 @@ res.status(200).json({contest:contest.toObject({getters:true})})
 const getallcontests=async (req,res,next)=>{
 let contests;
 try{
-contests=await Contest.find({},['questions'])
+contests=await Contest.find({},['-questions'])
 }catch(err){
 return next(new HttpError("Could not fetch the contests,please try again later",500))
 }
@@ -107,6 +107,7 @@ return next(new HttpError('Could not delete the contest,please try again later',
 }
 res.status(200).json({message:'Deleted successfully'})
 }
+
 module.exports={
     createcontest,
     updatecontest,

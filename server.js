@@ -11,7 +11,8 @@ const registeredusersrouter=require('./routers/registerforcontest')
 const Testvalidationrouter=require('./routers/Testvalidation')
 const adminrouter=require('./routers/admin')
 const Pendinguserrouter=require('./routers/Pendinguser')
-const uploadfilecontroller=require('./routers/CsvUpload')
+const uploadfilerouter=require('./routers/CsvUpload')
+const memberrouter=require('./routers/Member')
 const cors=require('cors')
 require('dotenv').config()
 const app = express();
@@ -27,11 +28,12 @@ app.enable("trust proxy")
 //body-parser
 
 
-//rest-routers
+//Routes
 app.get("/",(req,res)=>{
   res.render('upload')
 })
-app.use(uploadfilecontroller)
+app.use(uploadfilerouter)
+app.use(memberrouter)
 app.use(Pendinguserrouter)
 app.use(userrouter)
 app.use(contestrouter)
