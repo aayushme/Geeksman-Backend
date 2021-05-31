@@ -1,29 +1,39 @@
 const Contest = require('../models/Contest')
 const HttpError=require('../models/Http-error')
+const {cloudinary}=require('../Cloudinaryconfig/Cloudinary')
 const createcontest=async (req,res,next)=>{
-const {name,starttime,endtime,prize,registeredusers,contestdetail,rules}=req.body
+const {contestname,image,starttime,endtime,prize,contestdetail,noofquestions,contestduration,totalslots,slotstrength,rules,contesttype}=req.body
+let imageresponse
+try{
+    imageresponse=await cloudinary.uploader.upload(image,{upload_preset:'Contest-image'})
+}catch(e){
+    return res.status(500).json({message:'Image upload failed!!'})
+}
 let contest=new Contest({
-  name,
-  starttime,
-  endtime,
-  prize,
-  registeredusers,
-  contestdetail,
-  rules,
-  contestType,
-  availableslot
+ contestname,
+ image:imageresponse.secure_url,
+ starttime,
+ endtime,
+ prize,
+ contestdetail,
+ noofquestions,
+ contestduration,
+ totalslots,
+ slotstrength,
+ rules,
+ contesttype
 })
 try{
 await contest.save()
 }catch(err){
-  console.log(err);
 const error=new HttpError('Could not create a contest please try again later',500)
 return next(error)
 }
-res.status(200).json({contest:contest.toObject({getters:true})})
+
+res.status(201).json({message:"Contest created successfully!!"})
 }
 
-// code is missing here about the update thing......
+
 const updatecontest=async (req,res,next)=>{
 const contestid=req.params.cid
 let contest
@@ -35,6 +45,8 @@ contest=await Contest.findById(contestid)
 if(!contest){
     return next(new HttpError('Could not find a contest to update,please try again later',422))
 }
+
+
 
 try{
 await contest.save()
@@ -48,15 +60,18 @@ res.status(200).json({contest:contest.toObject({getters:true})})
 const getcontest=async (req,res,next)=>{
 const contestid=req.params.cid
 let contest;
+
 try{
-contest=await Contest.findById(contestid)
+contest=await Contest.findById(contestid,['-questions'])
 }catch(err){
     const error=new HttpError('Could not fetch the contest,please try again later',500)
     return next(error)
 }
+
 if(!contest){
     return next(new HttpError("Could not find a contest with that id,please try again later",422))
 }
+
 res.status(200).json({contest:contest.toObject({getters:true})})
 }
 
@@ -64,7 +79,7 @@ res.status(200).json({contest:contest.toObject({getters:true})})
 const getallcontests=async (req,res,next)=>{
 let contests;
 try{
-contests=await Contest.find({})
+contests=await Contest.find({},['questions'])
 }catch(err){
 return next(new HttpError("Could not fetch the contests,please try again later",500))
 }

@@ -1,6 +1,6 @@
 const mongoose=require('mongoose')
 const contestSchema=new mongoose.Schema({
-Contestname:{
+contestname:{
     type:String,
     required:true
 },
@@ -12,6 +12,10 @@ endtime:{
     type:Date,
     required:true
 },
+image:{
+    type:String,
+    required:true,
+},
 noofquestions:{
     type:Number,
     required:true,
@@ -19,8 +23,9 @@ noofquestions:{
 questions:[
 {
     type:mongoose.Types.ObjectId,
-    ref:'Question'
-}
+    ref:'Question',
+    default:null
+},
 ],
 contestduration:{
 type:String,
@@ -33,10 +38,11 @@ prize:{
 registeredusers:[
     {
         type:mongoose.Types.ObjectId,
-        ref:"RegisteredUser"
+        ref:"RegisteredUser",
+        default:null
     }
 ],
-Totalslots:[{
+totalslots:[{
   slotno:{
       type:String,
       required:true
@@ -65,7 +71,7 @@ rules:{
     type:String,
     required:true
 },
-contestType:{
+contesttype:{
     type:String,
     enum:['ongoing','upcoming','previous'],
     required:true
