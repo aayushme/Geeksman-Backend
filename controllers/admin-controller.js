@@ -9,7 +9,7 @@ const createadmin=async (req,res,next)=>{
     try{
      admin=await Admin.findOne({adminemail})
     }catch(e){
-       return res.status(500).json({"error":e})
+       return res.status(500).json({message:e})
     }
     if(admin){
         return res.status(409).json({message:"Admin with this email already exists"})

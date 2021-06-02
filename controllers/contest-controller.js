@@ -45,9 +45,6 @@ contest=await Contest.findById(contestid)
 if(!contest){
     return next(new HttpError('Could not find a contest to update,please try again later',422))
 }
-
-
-
 try{
 await contest.save()
 }catch(err){
@@ -60,7 +57,6 @@ res.status(200).json({contest:contest.toObject({getters:true})})
 const getcontest=async (req,res,next)=>{
 const contestid=req.params.cid
 let contest;
-
 try{
 contest=await Contest.findById(contestid,['-questions'])
 }catch(err){

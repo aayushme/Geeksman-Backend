@@ -83,6 +83,8 @@ const createquestion=async (req,res,next)=>{
     }
     const {question,image,options,correctvalue,score}=req.body
 
+    let questions 
+    if(image!==null){
     //First upload image to cloudinary and get url
     let imageresponse;
     // console.log(image)
@@ -91,14 +93,22 @@ const createquestion=async (req,res,next)=>{
     }catch(e){
         return res.status(500).json({message:'Image upload failed!!'})
     }
-    let questions =new Question({
+    questions=new Question({
         question,
         image:imageresponse.secure_url,
         options,
         correctvalue,
         score
     })
-    
+    }else{
+        questions=new Question({
+            question,
+            image,
+            options,
+            correctvalue,
+            score
+        })
+    }
     // Started a mongoose session and transaction if anything fails changes rolls back
     const sess=await mongoose.startSession();
     sess.startTransaction();

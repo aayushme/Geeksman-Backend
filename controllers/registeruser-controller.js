@@ -66,7 +66,7 @@ const registerforcontest = async (req, res, next) => {
     branch: user.Branch,
   });
   await newuser.save();
-  let totalslots = contest.Totalslots.length;
+  let totalslots = contest.totalslots.length;
   let givenslot;
 
   if (contest.availableslot.length === 0) {
@@ -81,8 +81,8 @@ const registerforcontest = async (req, res, next) => {
         givenslot = i + 1;
         contest.availableslot[i] = contest.availableslot[i] + 1;
         newuser.slot.slotno = givenslot;
-        newuser.slot.slotstarttime = contest.Totalslots[i].slotstarttime;
-        newuser.slot.slotendtime = contest.Totalslots[i].slotendtime;
+        newuser.slot.slotstarttime = contest.totalslots[i].slotstarttime;
+        newuser.slot.slotendtime = contest.totalslots[i].slotendtime;
         newuser.contestname = contest.Contestname;
         await newuser.save({ session: sess });
         contest.registeredusers.push(newuser);
