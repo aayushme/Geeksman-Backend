@@ -12,9 +12,8 @@ const createadmin=async (req,res,next)=>{
        return res.status(500).json({"error":e})
     }
     if(admin){
-        return res.json({message:"Admin with this email already exists"})
+        return res.status(409).json({message:"Admin with this email already exists"})
     }
-
     //hashing the password first before creating the admin
     let hashedpassword;
     try{
@@ -53,7 +52,7 @@ const loginadmin= async (req,res,next)=>{
  }
  
  if(!existingAdmin){
-     return res.status(404).json({message:"Invalid credentials,could not log you in"})
+     return res.status(401).json({message:"Invalid credentials,could not log you in"})
  }
  let isvalidpasword = false;
  try {

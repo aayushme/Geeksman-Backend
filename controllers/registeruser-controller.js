@@ -58,13 +58,12 @@ const registerforcontest = async (req, res, next) => {
       .json({ error: "Could not find the user,please try again later" });
   }
   let newuser = new RegisteredUser({
-    Name: user.name,
+    name: user.name,
     email: user.email,
-    PhoneNo: user.phoneno,
+    phoneno: user.phoneno,
     college: user.college,
     year: user.year,
-    Branch: user.Branch,
-    ContestId: cid,
+    branch: user.Branch,
   });
   await newuser.save();
   let totalslots = contest.Totalslots.length;

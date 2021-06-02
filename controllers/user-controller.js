@@ -55,7 +55,6 @@ const signuphandler = async (req, res, next) => {
     <p>Click below to confirm your email address:
     <a href="${process.env.BACKEND_URL}activate/user/${hash}">link</a><br>If you have problems, please paste the above URL into your web browser.</p>`
     };
-
     mailgun.messages().send(data, function (error, body) {
       if (error) {
         console.log(error);

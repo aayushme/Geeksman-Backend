@@ -1,6 +1,6 @@
 const mongoose=require('mongoose')
 const registerSchema=new mongoose.Schema({
-            Name:{
+            name:{
                 type:String,
                 
             },
@@ -8,7 +8,7 @@ const registerSchema=new mongoose.Schema({
                 type:String,
                 
             },
-            PhoneNo:{
+            phoneno:{
                 type:Number,
                 
             },
@@ -21,7 +21,7 @@ const registerSchema=new mongoose.Schema({
             year:{
                 type:String
             },
-            Branch:{
+            branch:{
                 type:String,
                 default:null
             },
@@ -48,10 +48,5 @@ const registerSchema=new mongoose.Schema({
                 type:Boolean,
                 default:false,
             },
-            ContestId:{
-                type:String,
-                default:null
-            },
-            
 })
 module.exports=mongoose.model("RegisteredUser",registerSchema);
